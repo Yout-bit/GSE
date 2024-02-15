@@ -8,4 +8,4 @@
 4. That should run the server locally, and provide a link for you to view (probably http://127.0.0.1:8000/) the server that shows a 404 error
 5. Edit the link to have look like : http://127.0.0.1:8000/hello/
 6. This should return "Hello World!"
-7. Back on the comand line, press `CTL+C` to close the server 
+7. Back on the command line, press `CTL+C` to close the server 
