@@ -3,3 +3,6 @@ from django.http import HttpResponse
 
 def hello(request):
     return HttpResponse("Hello, World!")
+
+def loginSuccess(request):
+    return HttpResponse("Login Successful!")
