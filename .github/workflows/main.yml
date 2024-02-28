@@ -30,6 +30,7 @@ jobs:
 
     - name: Build static files
       run: |
+        cd src/gseproject
         python manage.py collectstatic --noinput 
 
     - name: Run tests
