@@ -6,6 +6,10 @@ from .models import UserProfile
 def home_view(request):
     return render(request, 'home.html')
     
+
+def scanner_view(request):
+    return render(request, 'game/qr_scanner.html')
+
 def coin_view(request):
     user_profile = UserProfile.objects.get(user=request.user)
     context = {'coins': user_profile.coins}
