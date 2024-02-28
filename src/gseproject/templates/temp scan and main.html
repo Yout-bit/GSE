@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mobile-sized Webpage</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
 <style> 
   * {
     border: red 2px solid;
@@ -106,6 +109,17 @@
     bottom: 25%;
     width: 100%;
   }
+
+  .coin-display {
+    position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: gold;
+            padding: 5px;
+            border-radius: 5px;
+            color: black;
+  }
+
   /* .top-right-number {
     position: absolute;
     top: 20px;
@@ -140,6 +154,10 @@
 
   <button onclick="scanAndCheckLocation()">Scan</button>
   <button>QR code</button>
+</div>
+
+<div class="coin-display">
+  &#x1FA99; Coins: {{ coins }}
 </div>
 
 <script>
@@ -251,7 +269,9 @@ function refreshPage() {
       }
     }
 
-
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
 
 </script>
 
