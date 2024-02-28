@@ -115,15 +115,6 @@
     padding: 5px 10px;
     border-radius: 50%;
   } */
-  .coin-display {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: gold;
-            padding: 5px;
-            border-radius: 5px;
-            color: black;
-        }
 </style>
 </head>
 <body>
@@ -145,7 +136,8 @@
 <button class="button-toggle" onclick="toggleSubSession()">≡</button>
 
 <div class="bottom-bar">
-  <button>Map</button>
+  <button onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'">Map</button>
+
   <button onclick="scanAndCheckLocation()">Scan</button>
   <button>QR code</button>
 </div>
@@ -258,6 +250,9 @@ function refreshPage() {
         console.error("Geolocation is not supported by your browser.");
       }
     }
+
+
+
 </script>
 
 </body>
