@@ -1,0 +1,48 @@
+
+{% extends 'base_template.html' %}
+
+{% block title %}Scanner{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src=" https://cdn.jsdelivr.net/npm/quagga@0.12.1/dist/quagga.min.js "></script>
+</head>
+<body>
+    <div id="video-container"></div>
+    <canvas id="canvas" style="display: none;"></canvas>
+
+    <script>
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.querySelector('#video-container'),
+                constraints: {
+                    width: 640,
+                    height: 480,
+                    facingMode: "environment" // or "user" for front camera
+                }
+            },
+            decoder: {
+                readers: ["code_128_reader", "ean_reader", "ean_8_reader", "code_39_reader", "code_39_vin_reader", "codabar_reader", "upc_reader", "upc_e_reader", "i2of5_reader"]
+            }
+        }, function(err) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            console.log("Initialization finished. Ready to start");
+            Quagga.start();
+        });
+
+        Quagga.onDetected(function(data) {
+            console.log("Barcode detected and processed : [" + data.codeResult.code + "]", data);
+            alert("QR Code detected: " + data.codeResult.code);
+            // You can perform further actions with the detected QR code here
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
