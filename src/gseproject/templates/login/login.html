@@ -8,22 +8,25 @@
   <div class="row justify-content-center mt-5">
       <div class="col-md-6">
           <div class="card">
-              <div class="card-header bg-success text-white">
-                  <h5 class="mb-0">Login</h5>
-              </div>
-              <div class="card-body">
-                  <form method="post">
-                      {% csrf_token %}
-                      <div class="form-group">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Login</h5>
+                </div>
+                <div class="card-body">
+                      <form method="post">
+                          {% csrf_token %}
+                        <div class="form-group">
                           <label for="username">Username</label>
                           <input type="text" name="username" id="username" class="form-control" required>
-                      </div>
-                      <div class="form-group">
+                        </div>
+                        <div class="form-group">
                           <label for="password">Password</label>
                           <input type="password" name="password" id="password" class="form-control" required>
                       </div>
                       <button type="submit" class="btn btn-success btn-block">Login</button>
                   </form>
+              </div>
+              <div class="card-footer">
+                <small>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></small>
               </div>
           </div>
       </div>

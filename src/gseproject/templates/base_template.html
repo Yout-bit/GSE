@@ -18,24 +18,41 @@
     <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                {% load static %}
-                <img src="{% static 'images/Uni_Logo.png' %}" alt="Exeter uni Logo" class="d-inline-block align-top img-fluid" style="max-width: 20%"></a>
-            </a>
+            <div class="row w-100">
+                <div class="col-lg-6">
+                    <a class="navbar-brand" href="{% url 'home' %}">
+                        {% load static %}
+                        <img src="{% static 'images/Uni_Logo.png' %}" alt="Exeter uni Logo" class="d-inline-block align-top img-fluid" style="max-width: 30%">
+                    </a>
+                </div>
+                <div class="col-lg-6 d-none d-lg-flex align-items-center "> 
+                    {% if user.is_authenticated %}
+                        <span class="text-white">{{ user.username }}</span>
+                    {% endif %}
+                </div>
+              
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
+            
+            <div class="d-lg-none ml-auto"> 
+                {% if user.is_authenticated %}
+                    <span class="text-white">{{ user.username }}</span>
+                {% endif %}
+            </div>
+
+            <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNav">
+                <ul class="navbar-nav ml-auto mr-lg-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <form action="{% url 'logout' %}" method="post" class="nav-link">
+                        <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-link">Logout</button>
+                            <button type="submit" class="btn btn-link nav-link">Logout</button>
                         </form>
                     </li>
                     {% else %}
@@ -53,6 +70,7 @@
             </div>
         </div>
     </nav>
+    
     
 
     <!-- Main content area -->
