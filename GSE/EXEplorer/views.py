@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from login.forms import SignUpForm
 from django.contrib.auth.decorators import login_required
 
+def home_view(request):
+    return render(request, 'home.html')
 
 def login_view(request):
     if request.method == "POST":
