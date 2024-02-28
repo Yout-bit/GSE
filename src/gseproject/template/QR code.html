@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Scanner</title>
+  <!-- Include html5-qrcode library -->
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+  <h1>QR Code Scanner</h1>
+  <!-- Add an empty div where you want to place the qrcode scanner -->
+  <div id="reader" style="width: 600px;"></div>
+  <script>
+    // Define the onScanSuccess callback function
+    function onScanSuccess(decodedText, decodedResult) {
+      // Handle the scanned code as you like
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      // You can perform further actions here with the scanned QR code
+      alert(`Code matched = ${decodedText}`);
+    }
+
+    // Define the onScanFailure callback function
+    function onScanFailure(error) {
+      // Handle scan failure
+      console.warn(`Code scan error = ${error}`);
+    }
+
+    // Initialize the Html5QrcodeScanner
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: {width: 250, height: 250} },
+      /* verbose= */ false
+    );
+
+    // Render the scanner with the defined callbacks
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+  </script>
+</body>
+</html>

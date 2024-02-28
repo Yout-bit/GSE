@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Find Buildings Within Range</title>
+  <script>
+    // Predefined array of buildings with names and coordinates
+    const buildings = [
+      { name: "Building A", location: { lat: 40.7128, lng: -74.0060 } },
+      { name: "Building B", location: { lat: 40.7306, lng: -73.9352 } },
+      { name: "Exeter One Block C", location: { lat: 50.739853, lng: -3.545982 } },
+      // Add more buildings as needed
+    ];
+
+    // Function to calculate the distance between two points
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371000; // Radius of the Earth in meters
+      const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+      const dLon = (lon2 - lon1) * (Math.PI / 180);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c; // Distance in meters
+      return distance;
+    }
+
+    // Function to find buildings within the specified range
+    function findBuildingsWithinRange(latitude, longitude, maxRange) {
+      const userLocation = { lat: latitude, lng: longitude };
+      const buildingsWithinRange = [];
+
+      buildings.forEach((building) => {
+        const distance = calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          building.location.lat,
+          building.location.lng
+        );
+
+        if (distance <= maxRange) {
+          buildingsWithinRange.push(building);
+        }
+      });
+
+      return buildingsWithinRange;
+    }
+
+    function getCoordinates() {
+      // Check if geolocation is supported
+      if (navigator.geolocation) {
+        // Get the current position
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Extract latitude and longitude from the position object
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Print the local location coordinates to the console
+            console.log("Local Location - Latitude:", latitude);
+            console.log("Local Location - Longitude:", longitude);
+
+            // Define the maximum range in meters
+            const maxRange = 25; // Maximum range in meters
+
+            // Find buildings within the specified range
+            const buildingsInRange = findBuildingsWithinRange(latitude, longitude, maxRange);
+
+            // Print the names and locations of buildings within range to the console
+            console.log("Buildings within", maxRange, "meters:");
+            buildingsInRange.forEach((building) => {
+              console.log("Name:", building.name);
+              console.log("Location:", building.location);
+            });
+          },
+          (error) => {
+            // Handle any errors that may occur
+            console.error("Error getting location:", error.message);
+          }
+        );
+      } else {
+        // Geolocation is not supported by the browser
+        console.error("Geolocation is not supported by your browser.");
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>Click the button below to get coordinates and find buildings within 25 meters:</h2>
+  <button onclick="getCoordinates()">Get Coordinates</button>
+</body>
+</html>
