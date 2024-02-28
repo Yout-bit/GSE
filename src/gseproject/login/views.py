@@ -7,12 +7,15 @@ from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     if request.method == "POST":
-        user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
             messages.error(request, "Invalid username or password")
+            return redirect('login')
     return render(request, "login/login.html")
 
 def signup_view(request):
