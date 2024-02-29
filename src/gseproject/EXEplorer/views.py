@@ -19,3 +19,6 @@ def game_view(request):
         user_profile = UserProfile.objects.create(user=request.user)
     context = {'coins': user_profile.coins}
     return render(request, 'game/temp scan and main.html', context)
+
+def scanner_view(request):
+    return render(request, 'game/QR code.html')

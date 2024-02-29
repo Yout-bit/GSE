@@ -1,16 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QR Code Scanner</title>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  
-  
-</head>
+{% extends 'base_template.html' %}
+
+{% block title %}Scanner - EXEplorer{% endblock %}
+
+{% block content %}
 <body>
   <div id ="your-qr-result"></div>
-  <h1>QR Code Scanner</h1>
   <div>
     <div id="my-qr-reader" style="width: 600px;"></div>
   </div>
@@ -42,10 +36,5 @@
       
         })
         
-
-
-
-
   </script>
-</body>
-</html>
+ {% endblock %}

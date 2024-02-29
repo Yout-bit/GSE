@@ -163,7 +163,7 @@
   <button onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'">Map</button>
 
   <button onclick="scanAndCheckLocation()">Scan</button>
-  <button>QR code</button>
+  <button onclick="openQRScanner()">Open QR Scanner</button>
 </div>
 
 <div class="coin-display">
@@ -171,6 +171,11 @@
 </div>
 
 <script>
+function openQRScanner() {
+            // Redirect to the QR scanner page
+            window.location.href = "{% url 'scanner' %}";
+}
+
 function toggleSubSession() {
   var subSession = document.getElementById("subSession");
   var overlay = document.getElementById("overlay");
