@@ -12,6 +12,7 @@
     
     {% load static %}
     <link rel="stylesheet" type="text/css" href=" {% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/background.css' %}">
 </head>
 
 <body>
@@ -55,14 +56,14 @@
                             <button type="submit" class="btn btn-link nav-link">Logout</button>
                         </form>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'game' %}">Game</a>
+                    </li>
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                     {% endif %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Game</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Scores</a>
                     </li>
@@ -80,7 +81,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer fixed-bottom bg-success">
         <div class="container">
             <p>&copy; 2024 EXEplorer. All rights reserved.</p>
         </div>
