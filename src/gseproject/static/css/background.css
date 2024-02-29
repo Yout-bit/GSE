@@ -1,0 +1,14 @@
+body::before {
+    content: ""; /* Add content for the pseudo-element */
+    position: fixed; /* Set the position to absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/static/images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.2; /* Adjust the opacity value (0 to 1) to make the background image fainter */
+    z-index: -1; /* Set the z-index to send the overlay behind the content */
+}
