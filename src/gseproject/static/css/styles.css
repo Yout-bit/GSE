@@ -18,3 +18,12 @@ body {
     text-align: center;
     padding: 10px 0;
 }
+
+.start-btn {
+    background-color: #4CAF50;
+    border: #4CAF50;
+}
+
+.start-btn:hover {
+    background-color: #2E8B57; 
+  }
