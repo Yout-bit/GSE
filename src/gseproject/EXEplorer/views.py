@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from .models import UserProfile
-from django.http import HttpResponse
-# Create your views here.
+from django.http import JsonResponse
 
 def home_view(request):
     return render(request, 'home.html')
+
+
+def health(request):
+    state = {"status": "UP"}
+    return JsonResponse(state)
 
 def game_view(request):
     try:
