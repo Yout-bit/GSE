@@ -10,6 +10,8 @@ body {
     padding: 20px;
 }
 
+.clear { clear: both; height: 80px; }
+
 .footer {
     background-color: #4CAF50;
     color: white;
