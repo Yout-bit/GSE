@@ -1,0 +1,15 @@
+{% extends "base_template.html" %}
+
+{% block title %}My Coins - EXEplorer{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>My Coins</h2>
+    <p>Here's how many coins you've earned:</p>
+    <div class="coins-display my-4 p-3 bg-light rounded">
+        <h3><span class="emoji" role="img" aria-label="coin">&#x1FA99;</span> {{ user_coins }} Coins</h3>
+    </div>
+</div>
+
+{% endblock %}
