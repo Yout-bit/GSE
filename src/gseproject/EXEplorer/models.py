@@ -20,7 +20,7 @@ class Tools(models.Model):
         return self.toolsName
 
 class Tree(models.Model):
-    player = models.ForeignKey(Player, on_delete = models.CASCADE, verbose_name = "Player", related_name = "trees")
+    playerID = models.ForeignKey(Player, on_delete = models.CASCADE, verbose_name = "Player", related_name = "trees")
     tree = models.PositiveIntegerField(default = 0, verbose_name = "tree")
     treeComebackTime = models.DateTimeField(verbose_name = "Comeback Time")
     
