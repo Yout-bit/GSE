@@ -5,13 +5,13 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cherries = models.IntegerField(default=20)
-    carbonFootPrint = models.IntegerField(default=5)
+    carbonFootprint = models.IntegerField(default=5)
 
     def __str__(self):
         return self.user.username + "'s Profile"
       
     def printCarbonFootprint(self):
-        return str(self.carbonFootPrint) + " Carbon footprint value"
+        return str(self.carbonFootprint) + " Carbon footprint value"
     
 class ScannedNumber(models.Model):
     number = models.IntegerField()
