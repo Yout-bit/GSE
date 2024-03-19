@@ -1,0 +1,15 @@
+{% extends "base_template.html" %}
+
+{% block title %}My Cherries - EXEplorer{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+    <h2>My Cherries</h2>
+    <p>Here's how many cherries you've earned:</p>
+    <div class="cherry-display my-4 p-3 bg-light rounded">
+        <h3><span class="emoji" role="img" aria-label="cherry">&#x1F352;</span> {{ user_cherries }} Cherries</h3>
+    </div>
+</div>
+
+{% endblock %}
