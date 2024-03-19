@@ -258,7 +258,7 @@
 
 
   <div class="CarbonFootprint-display-container"> 
-    <p id="carbon-footprint">CarbonFootprint: {{ user.userprofile.carbonFootfrint }}/10</p>
+    <p id="carbon-footprint"> CarbonFootprint: {{user.userprofile.carbonFootprint}}/10</p>
   </div>
   <p id="time"></p>
 
@@ -296,7 +296,7 @@ function updateCherriesValue() {
         success: function(response) {
             // Update the displayed cherries value with the fetched value
             var cherry_num_element = document.getElementById("cherry_num");
-            cherry_num_element.textContent = response.cherries_value;
+            cherry_num_element.textContent = response.get_cherries_value;
         },
         error: function(xhr, errmsg, err) {
             // Handle errors if any
@@ -314,7 +314,7 @@ function updateCarbonFootprint() {
         success: function(response) {
             // Update the displayed carbon footprint value with the fetched value
             var carbon_footprint_element = document.getElementById("carbon-footprint");
-            carbon_footprint_element.textContent = "CarbonFootprint: " + response.carbon_footprint_value ;
+            carbon_footprint_element.textContent = "CarbonFootprint: " + response.get_carbon_footprint_value;
         },
         error: function(xhr, errmsg, err) {
             // Handle errors if any
@@ -336,11 +336,14 @@ function updateCarbonFootprint() {
 }
 
 function resetUserProfile() {
+    // Get the CSRF token from the cookie
+    const csrftoken = getCookie('csrftoken');
         fetch('/reset_user_profile', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 // Add any other headers if needed
+                'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
             },
             // Add body if needed
         })
@@ -353,7 +356,21 @@ function resetUserProfile() {
             console.error('Error:', error);
         });
     }
-
+    function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Check if the cookie name matches the one we're looking for
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
 
 //-----------------calling all the updates-----------------------------------------------------------------
 
