@@ -24,6 +24,6 @@ class Tree(models.Model):
     tree = models.PositiveIntegerField(default = 0, verbose_name = "tree")
     treeComebackTime = models.DateTimeField(verbose_name = "Comeback Time")
     
-    def str(self):
+    def __str__(self):
         return self.tree
     
