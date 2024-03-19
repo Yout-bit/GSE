@@ -3,13 +3,20 @@ from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
 
-class Player(models.Model):
-    username = models.CharField(settings.AUTH_USER_MODEL, on_delete = models.CASCADE, verbose_name = "User", related_name = "players")
-    playerID = models.AutoField(primary_key = True, verbose_name = "Player ID")
-    cherry = models.PositiveIntegerField(default = 0, verbose_name = "cherry")
-    def __str__(self):
-        return f"{self.username} - Player {self.playerID}"
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    cherries = models.IntegerField(default=20)
+    carbonFootfrint = models.IntegerField(default=5)
+    # Add any other fields you need for the user profile
 
+    def __str__(self):
+        return self.user.username + "'s Profile"
+    def getCarbonFootprint(self):
+        return str(self.carbonFootfrint) + " Carbon footprint value"
+    
+class ScannedNumber(models.Model):
+    number = models.IntegerField()
+    scanned_at = models.DateTimeField(auto_now_add=True)
 
 class Tools(models.Model):
     toolsID = models.AutoField(primary_key=True, verbose_name = "Tools ID")
@@ -20,7 +27,6 @@ class Tools(models.Model):
         return self.toolsName
 
 class Tree(models.Model):
-    playerID = models.ForeignKey(Player, on_delete = models.CASCADE, verbose_name = "Player", related_name = "trees")
     tree = models.PositiveIntegerField(default = 0, verbose_name = "tree")
     treeComebackTime = models.DateTimeField(verbose_name = "Comeback Time")
     
