@@ -70,7 +70,7 @@ def reset_user_profile(request):
     
 def get_carbon_footprint_value(request):
     # Fetch the current user's carbon footprint value
-    carbon_footprint_value = request.user.userprofile.carbonFootfrint
+    carbon_footprint_value = request.user.userprofile.carbonFootprint
     # Return the value as a JSON response
     return JsonResponse({'carbon_footprint_value': carbon_footprint_value})
 
