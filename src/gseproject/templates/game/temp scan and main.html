@@ -10,24 +10,8 @@
 <style> 
   
   
-  .coin-display {
-    position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: gold;
-            padding: 5px;
-            border-radius: 5px;
-            color: black;
-  }
-  .CarbonFootprint-display {
-    position: fixed;
-            top: 10px;
-            right: 120px;
-            background-color: gold;
-            padding: 5px;
-            border-radius: 5px;
-            color: black;
-  }
+
+ 
 
 
   *{
@@ -167,6 +151,7 @@
     left:5%;
   }
   #cherry_num {
+    float: left;
     position: absolute;
     right: 40%;
     color: red;
@@ -178,6 +163,41 @@
     color: red;
     font-size: 25px;
     font-family: "Arial";
+  }
+  .CarbonFootprint-display-container {
+    position: absolute;
+    border: 4px solid rgb(255, 75, 75);
+    background-color: gold;
+    border-radius: 20px;
+    top: 5px;
+    right: 450%;
+    width: 200px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .CarbonFootprint-display {
+    float: left;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+  }
+ #button-reset {
+    position: absolute;
+    bottom: 75%;
+    right: 80%;
+    width: 100px;
+    height: 80px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 9999; /* Adjusted to ensure it's always on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
   }
   .go-shop-container {
     position: absolute;
@@ -220,8 +240,10 @@
 
 
     <div class="go-shop-container">
-      <img src="{% static 'pics/go.png' %}" alt="GO SHOW" >
+        <img src="{% static 'pics/go.png' %}" alt="plantTree" onclick="plantTree()">
+      </a>
     </div>
+
 
     <div class="bottom-bar">
       <img src="{% static 'pics/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
@@ -232,24 +254,27 @@
 
   <div class="cherry-container">
     <img src="{% static 'pics/CHERRY.png' %}" alt="CHERRY" >
-    <p id="cherry_num">30</p>
+    <p id="cherry_num">{{user.userprofile.cherries}}</p>
 
-  <div class="CarbonFootprint-display"> 
-    &#x1FA99; CarbonFootprint: {{ CarbonFootprint }}/10
+
+  <div class="CarbonFootprint-display-container"> 
+    <p id="carbon-footprint">CarbonFootprint: {{ user.userprofile.carbonFootfrint }}/10</p>
   </div>
+  <p id="time"></p>
 
   <div class="overlay" id="overlay" onclick="toggleSubSession()"></div> <!-- Close the sub-session when clicking on the overlay -->
 </div>
 <button class="button-toggle" onclick="toggleSubSession()">≡</button>
+<button id="button-reset" onclick="resetUserProfile()">Reset Profile</button>
 <script>
 
-var cherry_num_value = 2;
-        
+
+        var cherry_num_value = user.userprofile.cherries;
         // Access the <p> element using its ID
         var cherry_num_element = document.getElementById("cherry_num");
                 
         // Set the content of the <p> element to the value of the JavaScript variable
-          cherry_num_element.textContent = cherry_num_value;
+        cherry_num_element.textContent = cherry_num_value;
         
         function toggleSubSession() {
           var subSession = document.getElementById("subSession");
@@ -261,8 +286,100 @@ var cherry_num_value = 2;
             location.reload(); // This line reloads the page
         }
         
+//-----------------updateCherriesValue-----------------------------------------------------------------
+// Function to fetch and update cherries value from the server
+function updateCherriesValue() {
+    // Send an AJAX request to fetch the updated cherries value
+    $.ajax({
+        url: '/api/get_cherries_value/',  // URL to your API endpoint that returns the cherries value
+        type: 'GET',
+        success: function(response) {
+            // Update the displayed cherries value with the fetched value
+            var cherry_num_element = document.getElementById("cherry_num");
+            cherry_num_element.textContent = response.cherries_value;
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle errors if any
+            console.log(xhr.status + ": " + xhr.responseText); // Log the error message
+        }
+    });
+}
+//-----------------update carbon footprint-----------------------------------------------------------------
+// Function to fetch and update carbon footprint value from the server
+function updateCarbonFootprint() {
+    // Send an AJAX request to fetch the updated carbon footprint value
+    $.ajax({
+        url: '/api/get_carbon_footprint_value/',  // URL to your API endpoint that returns the carbon footprint value
+        type: 'GET',
+        success: function(response) {
+            // Update the displayed carbon footprint value with the fetched value
+            var carbon_footprint_element = document.getElementById("carbon-footprint");
+            carbon_footprint_element.textContent = "CarbonFootprint: " + response.carbon_footprint_value ;
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle errors if any
+            console.log(xhr.status + ": " + xhr.responseText); // Log the error message
+        }
+    });
+}
+//-----------------carbon footprint-----------------------------------------------------------------
+  // Function to increment carbon footprint value
+  function incrementCarbonFootprint() {
+  // Get the current carbon footprint value from the DOM
+  var currentCarbonFootprint = parseInt(document.getElementById('carbon-footprint').innerText);
+
+  // Increment the carbon footprint value by 1
+  currentCarbonFootprint += 1;
+  
+  // Update the carbon footprint value in the DOM
+  document.getElementById('carbon-footprint').innerText = currentCarbonFootprint;
+}
+
+function resetUserProfile() {
+        fetch('/reset_user_profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers if needed
+            },
+            // Add body if needed
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Handle response data as needed
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
 
+//-----------------calling all the updates-----------------------------------------------------------------
+
+// Call the updateCarbonFootprint function initially
+updateCarbonFootprint();
+
+// Set interval to call the updateCarbonFootprint function every second
+setInterval(updateCarbonFootprint, 1000);
+
+// Call the updateCherriesValue function initially
+updateCherriesValue();
+
+// Set interval to call the updateCherriesValue function every second
+setInterval(updateCherriesValue, 1000);
+
+// Call the incrementCarbonFootprint function initially
+incrementCarbonFootprint();
+
+// Set interval to call the incrementCarbonFootprint function every hour (3600000 milliseconds)
+setInterval(incrementCarbonFootprint, 3600000);
+
+
+
+
+
+//-----------------qr scanner-----------------------------------------------------------------
 function openQRScanner() {
     // Redirect to the QR scanner page
   window.location.href = "{% url 'scanner' %}";
@@ -276,6 +393,9 @@ function toggleSubSession() {
 }
 function refreshPage() {
     location.reload(); // This line reloads the page
+}
+function plantTree(){
+  window.location.href = "{% url 'tree' %}";
 }
 
 // Function to handle scanning and checking location
@@ -307,7 +427,7 @@ function refreshPage() {
     // Function to calculate the distance between two points
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371000; // Radius of the Earth in meters
-      const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+      const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radiansWx
       const dLon = (lon2 - lon1) * (Math.PI / 180);
       const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -375,6 +495,34 @@ function refreshPage() {
         console.error("Geolocation is not supported by your browser.");
       }
     }
+    //-----------------time-----------------------------------------------------------------
+      // function to displayTime
+    function displayTime() {
+    var now = new Date();
+    var hours = now.getHours();
+    var minutes = now.getMinutes();
+    var seconds = now.getSeconds();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+
+    // Convert hours from 24-hour time to 12-hour time
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    // Add leading zeros to minutes and seconds if they are less than 10
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    var timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+    
+    document.getElementById('time').innerHTML = timeString;
+  }
+
+  // Call the function initially to display the time
+  displayTime();
+
+  // Call the function every second to update the time
+  setInterval(displayTime, 1000);
+
 
     
 

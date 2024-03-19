@@ -204,6 +204,37 @@
     .go-shop-container img:hover{
       transform: scale(1.1);
     }
+    html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#backButton {
+  position: fixed;
+    top: 40px;
+    left: 20px;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+#backButton:hover {
+  background-color: #45a049;
+}
   
   </style>
   </head>
@@ -251,12 +282,13 @@
             
             <!-- Display additional information -->
             <div class="coin-display">
-                &#x1FA99; Coins: {{ coins }}
+                &#x1FA99; Cherries: {{ cherriesCount }}
             </div>
             <div class="CarbonFootprint-display"> 
                 &#x1FA99; CarbonFootprint: {{ CarbonFootprint }}/10
             </div>
         </div>
+        <button id="backButton" onclick="goBack()">Back</button>
         
         <!-- Overlay for sub-session -->
         <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
@@ -304,7 +336,9 @@
       location.reload(); // This line reloads the page
   }
 
-  
+  function goBack(){
+    window.history.back();
+  }
 
 
   

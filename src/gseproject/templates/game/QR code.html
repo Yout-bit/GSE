@@ -230,10 +230,10 @@
     <p id="cherry_num">30</p>
 
     <div class="coin-display">
-      &#x1FA99; Coins: {{ coins }}
+      &#x1FA99; Cherries: {{ user.userprofile.cherries}}
     </div>
     <div class="CarbonFootprint-display"> 
-      &#x1FA99; CarbonFootprint: {{ CarbonFootprint }}/10
+      &#x1FA99; CarbonFootprint: {{ user.userprofile.CarbonFootprint }}/10
     </div>
 
     <!-- This is the text that will not be displayed normally-->
@@ -324,7 +324,7 @@
   function increaseCherryCount() {
     var cherryNumElement = document.getElementById("cherry_num");
     var cherryNumValue = parseInt(cherryNumElement.textContent);
-    cherryNumValue++; // Increase cherry count by 1
+    cherryNumValue=+10; // Increase cherry count by 1
     cherryNumElement.textContent = cherryNumValue; // Update the cherry count in the DOM
 }
 
