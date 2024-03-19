@@ -18,7 +18,7 @@ def game_view(request):
     except UserProfile.DoesNotExist:
         # If the UserProfile does not exist, create a new one
         user_profile = UserProfile.objects.create(user=request.user)
-    carbon_footprint = user_profile.carbonFootfrint
+    carbon_footprint = user_profile.carbonFootPrint
     context = {'cherries': user_profile.cherries,'CarbonFootprint':carbon_footprint}
     
     return render(request, 'game/temp scan and main.html', context)
@@ -36,7 +36,7 @@ def handle_scanned_number(request):
                 user_profile = request.user.userprofile
                 
                 # Update the carbonFootprint field with the scanned number
-                user_profile.carbonFootfrint += int(scanned_number)
+                user_profile.carbonFootPrint += int(scanned_number)
                 user_profile.cherries += 10
                 user_profile.save()
                 
