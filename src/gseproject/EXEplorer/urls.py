@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from .views import handle_scanned_number
+from .views import reset_user_profile
 
 urlpatterns = [
     path("", views.home_view, name="home"),
@@ -10,7 +11,7 @@ urlpatterns = [
     path('handle-scanned-number/', handle_scanned_number, name='handle_scanned_number'),
     path('shop/', views.shop_view, name='shop'),
     path('tree/', views.tree_view, name='tree'),
-    path('reset/', views.reset_user_profile, name='reset'),
+    path('reset_user_profile/', reset_user_profile, name='reset_user_profile'),
     path('api/get_cherries_value/', views.get_cherries_value, name='get_cherries_value'),
     path('api/get_carbon_footprint_value/', views.get_carbon_footprint_value, name='get_carbon_footprint_value'),
 ]
