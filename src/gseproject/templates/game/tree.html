@@ -355,7 +355,12 @@ function plantTree() {
             cherries += 10; // Bonus cherries for growing a tree
             alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!');
             plantingInProgress = false; // Reset planting flag
-            checkCooldown(); // Check cooldown for next planting
+
+            // Disable the plant button after planting the tree
+            document.getElementById('plantButton').disabled = true;
+
+            // Check cooldown for next planting
+            checkCooldown();
         }
     }, 2000); // Change stage every 2 seconds
 }
@@ -365,20 +370,37 @@ function updateCherriesDisplay() {
 }
 
 function checkCooldown() {
+    // Check if there is a record of the last planted time in localStorage
     let lastPlantedTime = localStorage.getItem('lastPlantedTime');
-    if (lastPlantedTime) {
-        let timePassed = new Date().getTime() - lastPlantedTime;
-        if (timePassed < cooldownDuration) {
-            // Disable plant button during cooldown
-            document.getElementById('plantButton').disabled = true;
-            // Start countdown timer
-            countdownTimer((cooldownDuration - timePassed) / 1000);
-        } else {
-            // If cooldown ended, enable plant button
+    if (!lastPlantedTime) {
+        // If there is no record, enable the plant button
+        document.getElementById('plantButton').disabled = false;
+        return;
+    }
+
+    // Convert the stored timestamp to a number
+    lastPlantedTime = parseInt(lastPlantedTime, 10);
+
+    // Calculate the time difference between the current time and the last planted time
+    let currentTime = new Date().getTime();
+    let timeDifference = currentTime - lastPlantedTime;
+
+    // Check if the cooldown duration has passed since the last planted time
+    if (timeDifference >= cooldownDuration) {
+        // If the cooldown duration has passed, enable the plant button
+        document.getElementById('plantButton').disabled = false;
+    } else {
+        // If the cooldown duration has not passed, disable the plant button
+        document.getElementById('plantButton').disabled = true;
+
+        // Set a timeout to enable the button after the remaining cooldown time has elapsed
+        setTimeout(() => {
             document.getElementById('plantButton').disabled = false;
-        }
+            alert('You can plant again now!');
+        }, cooldownDuration - timeDifference);
     }
 }
+
 
 function countdownTimer(seconds) {
     // Display countdown timer
