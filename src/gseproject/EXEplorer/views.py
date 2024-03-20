@@ -3,7 +3,9 @@ from .models import UserProfile, ScannedNumber
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-
+from django.views.decorators.http import require_POST
+from django.utils import timezone
+from datetime import timedelta
 
 def home_view(request):
     return render(request, 'home.html')
@@ -110,3 +112,13 @@ def tree_view(request):
 
 def scan_view(request):
     return render(request, 'game/scan.html')
+
+@require_POST
+@login_required
+def start_pet_walk(request):
+    player, _ = Player.objects.get_or_create(user=request.user)
+    player.dragon_visible = False
+    player.next_dragon_appearance = timezone.now() + timedelta(minutes=60)
+    player.save()
+    
+    return JsonResponse({'success': 'Pet walk started. Come back in 60 minutes to see your pet!'})
