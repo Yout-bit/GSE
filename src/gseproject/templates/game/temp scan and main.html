@@ -215,6 +215,18 @@
   .go-shop-container img:hover{
     transform: scale(1.1);
   }
+  .time-container{
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    color: blue;
+    
+  
+  }
+  #time{
+    font-size: 25px;
+    font-family: "Arial";
+  }
 
 </style>
 </head>
@@ -260,21 +272,29 @@
   <div class="CarbonFootprint-display-container"> 
     <p id="carbon-footprint"> CarbonFootprint: {{user.userprofile.carbonFootprint}}/10</p>
   </div>
-  <p id="time"></p>
+  <div class="time-container"> 
+    <p id="time" >12:00</p>
+  </div>
 
   <div class="overlay" id="overlay" onclick="toggleSubSession()"></div> <!-- Close the sub-session when clicking on the overlay -->
 </div>
 <button class="button-toggle" onclick="toggleSubSession()">≡</button>
 <button id="button-reset" onclick="resetUserProfile()">Reset Profile</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
 <script>
 
 
-        var cherry_num_value = user.userprofile.cherries;
-        // Access the <p> element using its ID
-        var cherry_num_element = document.getElementById("cherry_num");
+        // var cherry_num_value = user.userprofile.cherries;
+        // // Access the <p> element using its ID
+        // var cherry_num_element = document.getElementById("cherry_num");
                 
-        // Set the content of the <p> element to the value of the JavaScript variable
-        cherry_num_element.textContent = cherry_num_value;
+        // // Set the content of the <p> element to the value of the JavaScript variable
+        // cherry_num_element.textContent = cherry_num_value;
         
         function toggleSubSession() {
           var subSession = document.getElementById("subSession");
@@ -290,7 +310,7 @@
 // Function to fetch and update cherries value from the server
 function updateCherriesValue() {
     // Send an AJAX request to fetch the updated cherries value
-    $.ajax({
+    jQuery.ajax({
         url: '/api/get_cherries_value/',  // URL to your API endpoint that returns the cherries value
         type: 'GET',
         success: function(response) {
@@ -400,6 +420,7 @@ setInterval(incrementCarbonFootprint, 3600000);
 function openQRScanner() {
     // Redirect to the QR scanner page
   window.location.href = "{% url 'scanner' %}";
+  
 }
 
 function toggleSubSession() {
@@ -515,23 +536,25 @@ function plantTree(){
     //-----------------time-----------------------------------------------------------------
       // function to displayTime
     function displayTime() {
-    var now = new Date();
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
-    var seconds = now.getSeconds();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
+      
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      console.log(hours, minutes, seconds, ampm);
 
-    // Convert hours from 24-hour time to 12-hour time
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Handle midnight (0 hours)
+      // Convert hours from 24-hour time to 12-hour time
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Handle midnight (0 hours)
 
-    // Add leading zeros to minutes and seconds if they are less than 10
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    seconds = seconds < 10 ? '0' + seconds : seconds;
+      // Add leading zeros to minutes and seconds if they are less than 10
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    var timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
-    
-    document.getElementById('time').innerHTML = timeString;
+      var timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      
+      document.getElementById('time').innerHTML = timeString;
   }
 
   // Call the function initially to display the time
@@ -543,9 +566,8 @@ function plantTree(){
 
     
 
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+
+
 
 </script>
 
