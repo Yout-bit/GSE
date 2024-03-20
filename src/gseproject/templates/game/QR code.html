@@ -1,357 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EXEPET</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EXEPET</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
 
-<style> 
-  * {
-    /* border: red 2px solid; */
-    touch-action: manipulation; /* Prevent double-tap zoom */
-  }
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    position: relative;
-    min-height: 100vh; /* Ensure the body covers the entire viewport height */
-    overflow-x: hidden; /* Prevent horizontal scrolling */
-    overflow-y: hidden; /* Prevent vertical scrolling */
-    background-image: url("pics/BG_black.jpg");
-    background-size: cover; /* Adjust as needed */
-    background-repeat: no-repeat;
-    background-position: center center;
+    <style>
+      * {
+        /* border: red 2px solid; */
+        touch-action: manipulation; /* Prevent double-tap zoom */
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        position: relative;
+        min-height: 100vh; /* Ensure the body covers the entire viewport height */
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        overflow-y: hidden; /* Prevent vertical scrolling */
+        background-image: url("pics/BG_black.jpg");
+        background-size: cover; /* Adjust as needed */
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+      .container {
+        position: relative;
+        width: 100%;
+        height: calc(100vh - 60px); /* Adjusted for bottom bar height */
+        overflow: hidden;
+        padding-bottom: 8vh; /* Ensure content doesn't get hidden behind the bottom bar */
+      }
+      .button-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px; /* Adjusted to top left corner */
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        z-index: 9999; /* Adjusted to ensure it's always on top */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+      }
+      .sub-session {
+        position: absolute;
+        top: 0;
+        left: -40%; /* Adjusted to 40% width */
+        width: 30%;
+        height: 100%;
+        background-color: #007d69;
+        box-shadow: 0 0 10px rgba(215, 90, 90, 0.1);
+        transition: left 0.3s ease;
+        z-index: 3;
+      }
+      .sub-session.open {
+        left: 0; /* Slide in when open */
+      }
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 2; /* Adjusted to ensure it's below the button */
+      }
+      .overlay.active {
+        display: block;
+      }
+      .bottom-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 8%; /* 8% of viewport height */
+        background-color: #333;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 9999; /* Ensure it's always on top */
+      }
 
-  }
-  .container {
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 60px); /* Adjusted for bottom bar height */
-    overflow: hidden;
-    padding-bottom: 8vh; /* Ensure content doesn't get hidden behind the bottom bar */
-  }
-  .button-toggle {
-    position: fixed;
-    top: 20px;
-    left: 20px; /* Adjusted to top left corner */
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    z-index: 9999; /* Adjusted to ensure it's always on top */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-  }
-  .sub-session {
-    position: absolute;
-    top: 0;
-    left: -40%; /* Adjusted to 40% width */
-    width: 30%;
-    height: 100%;
-    background-color: #007d69;
-    box-shadow: 0 0 10px rgba(215, 90, 90, 0.1);
-    transition: left 0.3s ease;
-    z-index: 3;
-  }
-  .sub-session.open {
-    left: 0; /* Slide in when open */
-  }
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    z-index: 2; /* Adjusted to ensure it's below the button */
-  }
-  .overlay.active {
-    display: block;
-  }
-  .bottom-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 8%; /* 8% of viewport height */
-    background-color: #333;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 9999; /* Ensure it's always on top */
-  }
+      .bottom-bar img {
+        width: auto; /* Adjust the width to make the images smaller */
+        max-height: 90%; /* Maintain aspect ratio */
+        transition: transform 0.3s ease; /* Add transition for smooth scaling */
+      }
 
-  .bottom-bar img {
-    width: auto; /* Adjust the width to make the images smaller */
-    max-height: 90%; /* Maintain aspect ratio */
-    transition: transform 0.3s ease; /* Add transition for smooth scaling */
-}
+      .bottom-bar img:hover {
+        transform: scale(0.9); /* Scale the image down to 90% on hover */
+      }
 
-.bottom-bar img:hover {
-    transform: scale(0.9); /* Scale the image down to 90% on hover */
-}
+      .sub-session-content {
+        padding: 0% 0;
+        text-align: center;
+      }
+      .sub-session-content-logout {
+        padding: 0% 0;
+        text-align: center;
+        position: absolute;
+        bottom: 20%;
+        width: 100%;
+      }
+      .image-container {
+        /* border: red 5px solid; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
-  .sub-session-content {
-    padding: 0% 0;
-    text-align: center;
-  }
-  .sub-session-content-logout {
-    padding: 0% 0;
-    text-align: center;
-    position: absolute;
-    bottom: 20%;
-    width: 100%;
-  }
-  .image-container {
-      /* border: red 5px solid; */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-  .image-container img {
+      .image-container img {
         max-height: 100%; /* Ensure the image height doesn't exceed the viewport height */
         width: auto; /* Ensure the image width doesn't exceed the viewport width */
-  }
-  .cherry-container {
-    position: absolute;
-    border: 4px solid rgb(0, 0, 0);
-    background-color: #fae113;
-    border-radius: 20px;
-    top: 5px;
-    right: 5px;
-    width: 200px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .cherry-container img {
-    position: absolute;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-height: 95%;
-    left:15%;
-  }
-  #cherry_num {
-    position: absolute;
-    right: 40%;
-    color: black;
-    font-size: 35px;
-    top: 0px;
-    left: 97px;
-    font-family: "Arial";
-  }
-  #outting_cherry{
-    position: absolute;
-    color: red;
-    font-size: 25px;
-    font-family: "Arial";
-  }
-  #qr-reader-container {
-    position: absolute;
-    width: 400px;
-    height: 500px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  #qr-reader {
-    border: red 5px solid;
-    position: absolute;
+      }
+      .cherry-container {
+        position: absolute;
+        border: 4px solid rgb(0, 0, 0);
+        background-color: #fae113;
+        border-radius: 20px;
+        top: 5px;
+        right: 5px;
+        width: 200px;
+        height: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .cherry-container img {
+        position: absolute;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 95%;
+        left: 15%;
+      }
+      #cherry_num {
+        position: absolute;
+        right: 40%;
+        color: black;
+        font-size: 35px;
+        top: 0px;
+        left: 97px;
+        font-family: "Arial";
+      }
+      #outting_cherry {
+        position: absolute;
+        color: red;
+        font-size: 25px;
+        font-family: "Arial";
+      }
+      #qr-reader-container {
+        position: absolute;
+        width: 400px;
+        height: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      #qr-reader {
+        border: red 5px solid;
+        position: absolute;
+      }
+      #backButton {
+        position: fixed;
+        top: 40px;
+        left: 20px;
+        background-color: #4caf50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 10px;
+      }
 
-  }
+      #backButton:hover {
+        background-color: #45a049;
+      }
 
-  .coin-display {
-    position: fixed;
-            top: 75px;
-            right: 10px;
-            background-color: gold;
-            padding: 5px;
-            border-radius: 5px;
-            color: black;
-  }
-  .CarbonFootprint-display {
-    position: fixed;
-            top: 75px;
-            right: 120px;
-            background-color: gold;
-            padding: 5px;
-            border-radius: 5px;
-            color: black;
-  }
+      .CarbonFootprint-display {
+        position: fixed;
+        top: 75px;
+        right: 120px;
+        background-color: gold;
+        padding: 5px;
+        border-radius: 5px;
+        color: black;
+      }
+    </style>
+  </head>
 
+  <div class="container">
+    {%load static%}
+    <div class="sub-session" id="subSession">
+      <div style="width: 100%; height: 10%"></div>
 
-</style>
-</head>
+      <a href="{% url 'home' %}"><h2 class="sub-session-content">HOME</h2></a>
+      <h2 class="sub-session-content" onclick="alert('SHOP clicked')">SHOP</h2>
+      <h2 class="sub-session-content" onclick="alert('History clicked')">
+        History
+      </h2>
+      <h2 class="sub-session-content" onclick="alert('About clicked')">
+        About
+      </h2>
 
-<div class="container">
-  {%load static%}
-  <div class="sub-session" id="subSession">
-    <div style="width: 100%; height: 10%"></div>
-    
-    <a href="{% url 'home' %}"><h2 class="sub-session-content" >HOME</h2></a>
-    <h2 class="sub-session-content" onclick="alert('SHOP clicked')">SHOP</h2>
-    <h2 class="sub-session-content" onclick="alert('History clicked')">History</h2>
-    <h2 class="sub-session-content" onclick="alert('About clicked')">About</h2>
-
-    <h2 class="sub-session-content-logout" onclick="alert('log out clicked')">Log Out</h2>
-  </div>
-  
-  <div class="image-container">
-    <img src="{% static 'pics/BG.jpg' %}" alt="BG">
-
-  <div id="qr-reader-container">
-    <div id="qr-reader"></div>
-  </div>
-
-
-
-
-    <div class="bottom-bar">
-      <img src="{% static 'pics/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'">
-      <img src="{% static 'pics/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()">
-      <img src="{% static 'pics/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
-    </div>
-  </div>
-
-  <div class="cherry-container">
-    <img src="{% static 'pics/CHERRY.png' %}" alt="CHERRY" >
-    <p id="cherry_num">30</p>
-
-    <div class="coin-display">
-      &#x1FA99; Cherries: {{ user.userprofile.cherries}}
-    </div>
-    <div class="CarbonFootprint-display"> 
-      &#x1FA99; CarbonFootprint: {{ user.userprofile.CarbonFootprint }}/10
+      <h2 class="sub-session-content-logout" onclick="alert('log out clicked')">
+        Log Out
+      </h2>
     </div>
 
-    <!-- This is the text that will not be displayed normally-->
-    <!-- <p id="outting_cherry">Be Right Back</p>  -->
+    <div class="image-container">
+      <img src="{% static 'pics/BG.jpg' %}" alt="BG" />
+
+      <div id="qr-reader-container">
+        <div id="qr-reader"></div>
+      </div>
+
+      <div class="bottom-bar">
+        <img
+          src="{% static 'pics/MAP.png' %}"
+          alt="MAP"
+          onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"
+        />
+        <img
+          src="{% static 'pics/SCAN.png' %}"
+          alt="SCAN"
+          onclick="scanAndCheckLocation()"
+        />
+        <img
+          src="{% static 'pics/QR_CODE.png' %}"
+          alt="QRCODE"
+          onclick="openQRScanner()"
+        />
+      </div>
+    </div>
+
+    <div class="cherry-container">
+      <img src="{% static 'pics/CHERRY.png' %}" alt="CHERRY" />
+      <p id="cherry_num">30</p>
+
+      <div class="coin-display">
+        &#x1FA99; Cherries: {{ user.userprofile.cherries}}
+      </div>
+      <div class="CarbonFootprint-display">
+        &#x1FA99; CarbonFootprint: {{ user.userprofile.CarbonFootprint }}/10
+      </div>
+
+      <!-- This is the text that will not be displayed normally-->
+      <!-- <p id="outting_cherry">Be Right Back</p>  -->
+    </div>
+    <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
+    <!-- Close the sub-session when clicking on the overlay -->
   </div>
-  <div class="overlay" id="overlay" onclick="toggleSubSession()"></div> <!-- Close the sub-session when clicking on the overlay -->
-</div>
 
-<button class="button-toggle" onclick="toggleSubSession()">≡</button>
+  <button class="button-toggle" onclick="toggleSubSession()">≡</button>
+  <button id="backButton" onclick="goBack()">Back</button>
 
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script>
+    // Define a JavaScript variable
+    var cherry_num_value = 2; // Initialize to 0
 
-<script src="https://unpkg.com/html5-qrcode"></script>
-<script>
-  // Define a JavaScript variable
-  var cherry_num_value = 2; // Initialize to 0
+    // Access the <p> element using its ID
+    var cherry_num_element = document.getElementById("cherry_num");
+    // Set the content of the <p> element to the value of the JavaScript variable
+    cherry_num_element.textContent = cherry_num_value;
 
-  // Access the <p> element using its ID
-  var cherry_num_element = document.getElementById("cherry_num");
-  // Set the content of the <p> element to the value of the JavaScript variable
-  cherry_num_element.textContent = cherry_num_value;
-
-  // Check if the document is loaded completely
-  function domReady(fn) {
-    if (
-      document.readyState === "complete" ||
-      document.readyState === "interactive"
-    ) {
-      setTimeout(fn, 1);
-    } else {
-      document.addEventListener("DOMContentLoaded", fn);
-    }
-  }
-  // Function to check if QR code exists in cookies
-  function checkQRCodeInCookies(url) {
-    var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++) {
-      var cookie = cookies[i].trim();
-      if (cookie.indexOf(url) === 0) {
-        return true; // URL found in cookies
+    // Check if the document is loaded completely
+    function domReady(fn) {
+      if (
+        document.readyState === "complete" ||
+        document.readyState === "interactive"
+      ) {
+        setTimeout(fn, 1);
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
       }
     }
-    return false; // URL not found in cookies
-  }
-  domReady(function () {
-    var scannedNumber = null;
-
-    function onScanSuccess(decodedText, decodedResult) {
-      // Store the decoded text in a variable
-      scannedNumber = parseInt(decodedText);
-      // Optionally, you can perform any further actions with the decoded value here
-      console.log("Decoded value:", scannedNumber);
-      console.log("Value type:", typeof scannedNumber);
-      sendDataToDjango(scannedNumber);
-    }
-
-    var htmlscanner = new Html5QrcodeScanner("qr-reader", {
-      fps: 10,
-      qrbox: 250,
-    });
-    htmlscanner.render(onScanSuccess);
-  });
-
-  function sendDataToDjango(scannedNumber) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "{% url 'handle_scanned_number' %}", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-    // Include CSRF token in the request headers
-    var csrftoken = getCookie("csrftoken");
-    xhr.setRequestHeader("X-CSRFToken", csrftoken);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                var response = JSON.parse(xhr.responseText);
-                if (response.increaseCherryCount) {
-                    increaseCherryCount(); // Call function to increase cherry count
-                }
-                console.log("Data sent successfully");
-            } else {
-                console.error("Error sending data:", xhr.statusText);
-            }
-        }
-    };
-    xhr.send("scanned_number=" + encodeURIComponent(scannedNumber));
-  }
-
-  function increaseCherryCount() {
-    var cherryNumElement = document.getElementById("cherry_num");
-    var cherryNumValue = parseInt(cherryNumElement.textContent);
-    cherryNumValue=+10; // Increase cherry count by 1
-    cherryNumElement.textContent = cherryNumValue; // Update the cherry count in the DOM
-}
-
-  // Function to retrieve CSRF token from cookies
-  function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
+    // Function to check if QR code exists in cookies
+    function checkQRCodeInCookies(url) {
       var cookies = document.cookie.split(";");
       for (var i = 0; i < cookies.length; i++) {
         var cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === name + "=") {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
+        if (cookie.indexOf(url) === 0) {
+          return true; // URL found in cookies
         }
       }
+      return false; // URL not found in cookies
     }
-    return cookieValue;
-  }
+    domReady(function () {
+      var scannedNumber = null;
 
-  function toggleSubSession() {
-  var subSession = document.getElementById("subSession");
-  var overlay = document.getElementById("overlay");
-  subSession.classList.toggle("open");
-  overlay.classList.toggle("active");
-}
-function refreshPage() {
-    location.reload(); // This line reloads the page
-}
+      function onScanSuccess(decodedText, decodedResult) {
+        // Store the decoded text in a variable
+        scannedNumber = parseInt(decodedText);
+        // Optionally, you can perform any further actions with the decoded value here
+        console.log("Decoded value:", scannedNumber);
+        console.log("Value type:", typeof scannedNumber);
+        sendDataToDjango(scannedNumber);
+      }
 
-</script>
+      var htmlscanner = new Html5QrcodeScanner("qr-reader", {
+        fps: 10,
+        qrbox: 250,
+      });
+      htmlscanner.render(onScanSuccess);
+    });
+
+    function sendDataToDjango(scannedNumber) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "{% url 'handle_scanned_number' %}", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+      // Include CSRF token in the request headers
+      var csrftoken = getCookie("csrftoken");
+      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);
+            if (response.increaseCherryCount) {
+              increaseCherryCount(); // Call function to increase cherry count
+            }
+            console.log("Data sent successfully");
+          } else {
+            console.error("Error sending data:", xhr.statusText);
+          }
+        }
+      };
+      xhr.send("scanned_number=" + encodeURIComponent(scannedNumber));
+    }
+
+    function increaseCherryCount() {
+      var cherryNumElement = document.getElementById("cherry_num");
+      var cherryNumValue = parseInt(cherryNumElement.textContent);
+      cherryNumValue = +10; // Increase cherry count by 1
+      cherryNumElement.textContent = cherryNumValue; // Update the cherry count in the DOM
+    }
+
+    // Function to retrieve CSRF token from cookies
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === name + "=") {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+
+    function toggleSubSession() {
+      var subSession = document.getElementById("subSession");
+      var overlay = document.getElementById("overlay");
+      subSession.classList.toggle("open");
+      overlay.classList.toggle("active");
+    }
+    function refreshPage() {
+      location.reload(); // This line reloads the page
+    }
+    function goBack() {
+      window.history.back();
+    }
+  </script>
+</html>

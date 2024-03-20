@@ -2,9 +2,15 @@ from django.shortcuts import render
 from .models import UserProfile, ScannedNumber
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 def home_view(request):
-    return render(request, 'home.html')
+     # Fetch the user profile data
+    user_profile = UserProfile.objects.get(user=request.user)  # Assuming you have a UserProfile model related to your User model
+
+    # Pass the user profile data to the template context
+    return render(request, 'home.html',{'user_profile': user_profile})
 
 
 def health(request):
@@ -78,6 +84,21 @@ def get_carbon_footprint_value(request):
 
     # Return the value as a JSON response
     return JsonResponse({'carbon_footprint_value': carbon_footprint_value})
+
+
+def increment_carbon_footprint(request):
+    if request.method == 'POST':
+        # Get the current user's profile
+        user_profile = request.user.userprofile
+        # Increment the carbon footprint value by 1
+        user_profile.carbonFootprint += 1
+        # Save the updated profile
+        user_profile.save()
+        # Return a JSON response indicating success and the new carbon footprint value
+        return JsonResponse({'success': True, 'new_carbon_footprint_value': user_profile.carbonFootprint})
+    else:
+        # Return a JSON response with an error message if the request method is not POST
+        return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
 def get_cherries_value(request):
     # Fetch the current user's cherries value

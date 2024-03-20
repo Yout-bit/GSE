@@ -270,7 +270,7 @@
 
 
   <div class="CarbonFootprint-display-container"> 
-    <p id="carbon-footprint"> CarbonFootprint: {{user.userprofile.carbonFootprint}}/10</p>
+    <p id="carbon-footprint">CarbonFootprint: {{ user_profile.carbonFootprint }}/10</p>
   </div>
   <div class="time-container"> 
     <p id="time" >12:00</p>
@@ -284,7 +284,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
 
@@ -310,13 +310,13 @@
 // Function to fetch and update cherries value from the server
 function updateCherriesValue() {
     // Send an AJAX request to fetch the updated cherries value
-    jQuery.ajax({
+    $.ajax({
         url: '/api/get_cherries_value/',  // URL to your API endpoint that returns the cherries value
         type: 'GET',
         success: function(response) {
             // Update the displayed cherries value with the fetched value
             var cherry_num_element = document.getElementById("cherry_num");
-            cherry_num_element.textContent = response.get_cherries_value;
+            cherry_num_element.textContent = response.cherries_value;
         },
         error: function(xhr, errmsg, err) {
             // Handle errors if any
@@ -334,7 +334,7 @@ function updateCarbonFootprint() {
         success: function(response) {
             // Update the displayed carbon footprint value with the fetched value
             var carbon_footprint_element = document.getElementById("carbon-footprint");
-            carbon_footprint_element.textContent = "CarbonFootprint: " + response.get_carbon_footprint_value;
+            carbon_footprint_element.textContent = "CarbonFootprint: " + response.carbon_footprint_value+"/10";
         },
         error: function(xhr, errmsg, err) {
             // Handle errors if any
@@ -344,16 +344,26 @@ function updateCarbonFootprint() {
 }
 //-----------------carbon footprint-----------------------------------------------------------------
   // Function to increment carbon footprint value
-  function incrementCarbonFootprint() {
-  // Get the current carbon footprint value from the DOM
-  var currentCarbonFootprint = parseInt(document.getElementById('carbon-footprint').innerText);
 
-  // Increment the carbon footprint value by 1
-  currentCarbonFootprint += 1;
-  
-  // Update the carbon footprint value in the DOM
-  document.getElementById('carbon-footprint').innerText = currentCarbonFootprint;
-}
+ $(document).ready(function() {
+            setInterval(function() {
+                $.ajax({
+                    url: '/api/increment_carbon_footprint/',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#carbon-footprint').text("CarbonFootprint: " + response.new_carbon_footprint_value+"/10");
+                        } else {
+                            console.error('Failed to increment carbon footprint value:', response.error);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.error(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            }, 10000); // Repeat every 10 seconds
+        });
 
 function resetUserProfile() {
     // Get the CSRF token from the cookie
@@ -376,21 +386,31 @@ function resetUserProfile() {
             console.error('Error:', error);
         });
     }
+    // Function to retrieve the CSRF token from cookies
     function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            // Check if the cookie name matches the one we're looking for
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Check if the cookie name matches the CSRF token pattern
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
             }
         }
+        return cookieValue;
     }
-    return cookieValue;
-}
+    // Include the CSRF token in AJAX requests
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
 
 //-----------------calling all the updates-----------------------------------------------------------------
 
@@ -406,11 +426,8 @@ updateCherriesValue();
 // Set interval to call the updateCherriesValue function every second
 setInterval(updateCherriesValue, 1000);
 
-// Call the incrementCarbonFootprint function initially
-incrementCarbonFootprint();
 
-// Set interval to call the incrementCarbonFootprint function every hour (3600000 milliseconds)
-setInterval(incrementCarbonFootprint, 3600000);
+
 
 
 
@@ -542,7 +559,7 @@ function plantTree(){
       var minutes = now.getMinutes();
       var seconds = now.getSeconds();
       var ampm = hours >= 12 ? 'PM' : 'AM';
-      console.log(hours, minutes, seconds, ampm);
+      // console.log(hours, minutes, seconds, ampm);
 
       // Convert hours from 24-hour time to 12-hour time
       hours = hours % 12;
