@@ -111,3 +111,6 @@ def shop_view(request):
 
 def tree_view(request):
     return render(request, 'game/tree.html')
+
+def scan_view(request):
+    return render(request, 'game/scan.html')

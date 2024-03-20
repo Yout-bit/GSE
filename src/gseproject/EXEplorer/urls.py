@@ -15,4 +15,5 @@ urlpatterns = [
     path('api/get_cherries_value/', views.get_cherries_value, name='get_cherries_value'),
     path('api/get_carbon_footprint_value/', views.get_carbon_footprint_value, name='get_carbon_footprint_value'),
     path('api/increment_carbon_footprint/', views.increment_carbon_footprint, name='increment_carbon_footprint'),
+    path('scan/', views.scan_view, name='scan'),
 ]
