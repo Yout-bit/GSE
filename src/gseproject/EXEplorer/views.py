@@ -6,11 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def home_view(request):
-     # Fetch the user profile data
-    user_profile = UserProfile.objects.get(user=request.user)  # Assuming you have a UserProfile model related to your User model
-
-    # Pass the user profile data to the template context
-    return render(request, 'home.html',{'user_profile': user_profile})
+    return render(request, 'home.html')
 
 
 def health(request):
