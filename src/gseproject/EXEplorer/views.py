@@ -115,10 +115,10 @@ def scan_view(request):
 
 @require_POST
 @login_required
-def start_pet_walk(request):
-    player, _ = Player.objects.get_or_create(user=request.user)
+def petDisappear(request):
+    player, _ = UserProfile.objects.get_or_create(user=request.user)
     player.dragon_visible = False
     player.next_dragon_appearance = timezone.now() + timedelta(minutes=60)
     player.save()
     
-    return JsonResponse({'success': 'Pet walk started. Come back in 60 minutes to see your pet!'})
+    return JsonResponse({'success': 'Pet walk started. Come back in 60 minutes to see your pet!', "visible":player.dragon_visible, "nextshow":player.next_dragon_appearance})

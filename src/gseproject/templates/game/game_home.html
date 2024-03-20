@@ -31,7 +31,7 @@
 <div class="image-container">
 
     <div class="pet">
-        <img src="{% static 'images/dragon.png' %}" alt="dragon">
+        <img id="DragonImage" src="{% static 'images/dragon.png' %}" alt="dragon">
     </div>
 
     <div class="go-button">
@@ -42,6 +42,18 @@
 
 </div>
 
+<script>
+    function petDisappear() {
+        document.getElementById("DragonImage").style.display = 'none';
+    }
 
+    function petAppear() {
+        document.getElementById("DragonImage").style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        petDisappear();
+    });
+
+</Script>
 {% endblock %}
-
