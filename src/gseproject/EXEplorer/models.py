@@ -7,7 +7,7 @@ class UserProfile(models.Model):
     cherries = models.IntegerField(default=20)
     carbonFootprint = models.IntegerField(default=5)
     pet_visible = models.BooleanField(default=True)
-    next_pet_appearance = models.DateTimeField(null=True, blank=True)
+    next_pet_appearance = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.user.username + "'s Profile"
