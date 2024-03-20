@@ -18,24 +18,52 @@
       color: black;
     }
 
-.center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
+.start-container {
+    /*Using display: flex with flex-direction: column: 
+    This approach uses flexbox to create a column layout. 
+    All child elements will be stacked vertically within their container.*/
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(81, 163, 135);     /* Background color */
+    margin: 20px; /* Margin around the container */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the container */
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Align items vertically */
+}
+
+/* Style for the plant button */
+#plantButton {
+    width: 200px; /* Set the maximum width */
+    height: auto; /* Allow the height to adjust proportionally */
+    margin-right: 10px; /* Margin between button and text */
+}
+
+/* Style for the text */
+#plantTree-text {
+    color: #333; /* Text color */
+}
+#plantTree-text {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  top: 80%;
+  color: white;
 }
 </style>
-  
+<div class="start-container">
+    <p id="plantTree-text"> Click the tree to start planting!</p>
+    <img id="plantButton" src="{% static 'images/treebutton.jpg' %}" alt="treebutton">
+</div>
 <img id="treeImage1" src="{% static 'images/seed.png' %}" alt="Seed">
 <img id="treeImage2" src="{% static 'images/sprout.png' %}" alt="Sprout">
 <img id="treeImage3" src="{% static 'images/sapling.png' %}" alt="Sapling">
 <img id="treeImage4" src="{% static 'images/tree.png' %}" alt="Tree">
-<button id="plantButton" class="btn btn-success">Plant</button>
 
 <div class="countdown">
   Countdown: <span id="countdownTimer">10</span> seconds
 </div>
-       
+
 <script>
  
 let stage1 = 'static/images/seed.jpg';
@@ -133,6 +161,16 @@ function formatTime(seconds) {
     let remainingSeconds = seconds % 60;
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 }
+
+document.getElementById('plantButton').addEventListener('click', function() {
+    // Get all elements with the class 'start-container'
+    var containers = document.getElementsByClassName('start-container');
+
+    // Loop through each container and hide them
+    for (var i = 0; i < containers.length; i++) {
+        containers[i].style.display = 'none';
+    }
+});
 </script>
 
 

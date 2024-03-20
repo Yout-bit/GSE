@@ -34,6 +34,9 @@
         <div class="go-shop-container">
             <img src="{% static 'images/go.png' %}" alt="plantTree" onclick="redirectToPage('tree/')">
         </div>
+        <div class ="plantTree-container">
+          <img src="{% static 'images/plantTree.jpg' %}" alt="plantTree" onclick="redirectToPage('tree/')">
+        </div>
       
       
           <div class="bottom-bar">
@@ -51,7 +54,7 @@
         <div class="CarbonFootprint-display-container"> 
           <p id="carbon-footprint">CarbonFootprint: {{ user_profile.carbonFootprint }}/10</p>
         </div>
-      
+        
         <div class="overlay" id="overlay" onclick="toggleSubSession()"></div> <!-- Close the sub-session when clicking on the overlay -->
       </div>
       <button class="button-toggle" onclick="toggleSubSession()">≡</button>

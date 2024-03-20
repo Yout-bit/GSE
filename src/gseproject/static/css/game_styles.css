@@ -186,7 +186,7 @@
   }
   .go-shop-container {
     position: absolute;
-    bottom: 10%;
+    bottom: 30%;
     right: 2%;
     width: 100px;
     height: 100px;
@@ -200,6 +200,24 @@
   .go-shop-container img:hover{
     transform: scale(1.1);
   }
+
+  .plantTree-container {
+    position: absolute;
+    bottom: 10%;
+    right: 2%;
+    width: 100px;
+    height: 100px;
+  }
+  .plantTree-container img {
+    position: absolute;
+    display: block;
+    max-height: 100%;
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+  }
+  .plantTree-container img:hover{
+    transform: scale(1.1);
+  }
+
   #backButton {
     position: fixed;
       top: 40px;
