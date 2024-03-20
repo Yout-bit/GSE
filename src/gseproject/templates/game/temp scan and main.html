@@ -26,7 +26,7 @@
     min-height: 100vh; /* Ensure the body covers the entire viewport height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
     overflow-y: hidden; /* Prevent vertical scrolling */
-    background-image: url("pics/BG_black.jpg");
+    background-image: url("images/BG_black.jpg");
     background-size: cover; /* Adjust as needed */
     background-repeat: no-repeat;
     background-position: center center;
@@ -246,26 +246,26 @@
   </div>
   
   <div class="image-container">
-    <img src="{% static 'pics/BG.jpg' %}" alt="BG">
-    <img src="{% static 'pics/dragon.png' %}" alt="dragon" style="position: absolute;">
+    <img src="{% static 'images/BG.jpg' %}" alt="BG">
+    <img src="{% static 'images/dragon.png' %}" alt="dragon" style="position: absolute;">
 
 
 
     <div class="go-shop-container">
-        <img src="{% static 'pics/go.png' %}" alt="plantTree" onclick="plantTree()">
+        <img src="{% static 'images/go.png' %}" alt="plantTree" onclick="plantTree()">
       </a>
     </div>
 
 
     <div class="bottom-bar">
-      <img src="{% static 'pics/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
-      <img src="{% static 'pics/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()">
-      <img src="{% static 'pics/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
+      <img src="{% static 'images/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
+      <img src="{% static 'images/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()">
+      <img src="{% static 'images/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
     </div>
   </div>
 
   <div class="cherry-container">
-    <img src="{% static 'pics/CHERRY.png' %}" alt="CHERRY" >
+    <img src="{% static 'images/CHERRY.png' %}" alt="CHERRY" >
     <p id="cherry_num">{{user.userprofile.cherries}}</p>
 
 
