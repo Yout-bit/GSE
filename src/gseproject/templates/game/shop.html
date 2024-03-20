@@ -27,7 +27,7 @@
   </div>
 </div>
 <button id="backButton" class="btn btn-success" onclick="goBack()">Back</button>
-<img src="{% static 'images/START.png' %}" alt="start" class="start_button">
+<img src="{% static 'images/START.png' %}" alt="start" class="start_button" onclick="startPetWalk()">
 <script>
   var selectedTools = []; // Array to store selected tools
 
@@ -68,6 +68,39 @@
           selectedTools = []; // Clear the array
       } else {
           alert("Not enough cherries!");
+      }
+  }
+
+  function startPetWalk() {
+      fetch('{% url "start-pet-walk" %}', {
+          method: 'POST',
+          headers: {
+              'X-CSRFToken': getCookie('csrftoken'),
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}),
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data.success);
+          // Here you can also add code to hide the dragon image immediately
+          document.querySelector('.pet img').style.display = 'none';
+      });
+  
+      // Function to get CSRF token
+      function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
       }
   }
 </script>
