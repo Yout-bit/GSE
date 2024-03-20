@@ -38,8 +38,8 @@
       
           <div class="bottom-bar">
             <img src="{% static 'images/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
-            <img src="{% static 'images/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()">
-            <img src="{% static 'images/QR_CODE.png' %}" alt="QRCODE"  onclick="redirectToPage('scanner/')">
+            <img src="{% static 'images/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()"">
+            <img src="{% static 'images/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
           </div>
         </div>
       
@@ -71,6 +71,16 @@
             
             // Set interval to call the updateCherriesValue function every second
             setInterval(updateCherriesValue, 1000);
+            
+            function openQRScanner() {
+              // Redirect to the QR scanner page
+              window.location.href = "{% url 'scanner' %}";
+            }   
+
+            function scanAndCheckLocation() {
+              // Redirect to the QR scanner page
+              window.location.href = "{% url 'scan' %}";
+            }   
             
         </script>
     </body>
