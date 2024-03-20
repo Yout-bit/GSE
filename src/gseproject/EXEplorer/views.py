@@ -29,7 +29,7 @@ def game_view(request):
 
     context = {'cherries': user_profile.cherries,'CarbonFootprint':carbon_footprint}
     
-    return render(request, 'game/temp scan and main.html', context)
+    return render(request, 'game/game_home.html', context)
 
 def scanner_view(request):
     return render(request, 'game/QR code.html')

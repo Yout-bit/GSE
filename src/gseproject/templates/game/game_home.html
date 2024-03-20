@@ -1,0 +1,13 @@
+{% extends 'game/base_game_template.html' %}
+
+
+{% block title %}EXEPET{% endblock %}
+
+{% block content %}
+
+<button id="button-reset" onclick="resetUserProfile()">Reset Profile</button>
+{% load static %}
+<div class="image-container">
+    <img src="{% static 'images/dragon.png' %}" alt="dragon">
+</div>
+{% endblock %}
