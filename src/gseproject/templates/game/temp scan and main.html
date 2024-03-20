@@ -8,8 +8,14 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
 <style> 
-  * {
-    border: #4CAF50 2px solid;
+  
+  
+
+ 
+
+
+  *{
+    /* border: red 2px solid; */
     touch-action: manipulation; /* Prevent double-tap zoom */
   }
   body {
@@ -20,12 +26,16 @@
     min-height: 100vh; /* Ensure the body covers the entire viewport height */
     overflow-x: hidden; /* Prevent horizontal scrolling */
     overflow-y: hidden; /* Prevent vertical scrolling */
+    background-image: url("images/BG_black.jpg");
+    background-size: cover; /* Adjust as needed */
+    background-repeat: no-repeat;
+    background-position: center center;
+
   }
   .container {
     position: relative;
     width: 100%;
     height: calc(100vh - 60px); /* Adjusted for bottom bar height */
-    background-color: #f0f0f0;
     overflow: hidden;
     padding-bottom: 8vh; /* Ensure content doesn't get hidden behind the bottom bar */
   }
@@ -50,10 +60,10 @@
     position: absolute;
     top: 0;
     left: -40%; /* Adjusted to 40% width */
-    width: 40%;
+    width: 30%;
     height: 100%;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #007d69;
+    box-shadow: 0 0 10px rgba(215, 90, 90, 0.1);
     transition: left 0.3s ease;
     z-index: 3;
   }
@@ -78,72 +88,145 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 8vh; /* 8% of viewport height */
+    height: 8%; /* 8% of viewport height */
     background-color: #333;
     display: flex;
     justify-content: space-around;
     align-items: center;
     z-index: 9999; /* Ensure it's always on top */
   }
-  .bottom-bar button {
-    color: white;
-    background-color: #555;
-    border: none;
-    padding:15px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: medium;
-    transition: background-color 0.3s ease;
-  }
-  .bottom-bar button:hover {
-    background-color: #777;
-  }
+
+  .bottom-bar img {
+    width: auto; /* Adjust the width to make the images smaller */
+    max-height: 90%; /* Maintain aspect ratio */
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+}
+
+.bottom-bar img:hover {
+    transform: scale(0.9); /* Scale the image down to 90% on hover */
+}
+
   .sub-session-content {
     padding: 0% 0;
     text-align: center;
-    border: none; 
   }
   .sub-session-content-logout {
     padding: 0% 0;
     text-align: center;
     position: absolute;
-    border: none; 
-    bottom: 25%;
+    bottom: 20%;
     width: 100%;
   }
+  .image-container {
+      /* border: red 5px solid; */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-  .coin-display {
-    position: fixed;
-            top: 10px;
-            right: 10px;
-            background-color: gold;
-            padding: 5px;
-            border-radius: 5px;
-            color: black;
+  .image-container img {
+        max-height: 100%; /* Ensure the image height doesn't exceed the viewport height */
+        width: auto; /* Ensure the image width doesn't exceed the viewport width */
   }
-  .sub-session-content-logout-link {
-    color: inherit; 
-    text-decoration: none; 
-    border: none; 
-    background-color: transparent; 
-    padding: 0;
-    margin: 0; 
-}
-
-.central-element {
-    width: 100%;
-    height: 100%;
+  .cherry-container {
+    position: absolute;
+    border: 4px solid rgb(255, 75, 75);
+    background-color: white;
+    border-radius: 20px;
+    top: 5px;
+    right: 5px;
+    width: 200px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.central-element img {
-    max-width: 100%;
+  }
+  .cherry-container img {
+    position: absolute;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 95%;
+    left:5%;
+  }
+  #cherry_num {
+    float: left;
+    position: absolute;
+    right: 40%;
+    color: red;
+    font-size: 35px;
+    font-family: "Arial";
+  }
+  #outting_cherry{
+    position: absolute;
+    color: red;
+    font-size: 25px;
+    font-family: "Arial";
+  }
+  .CarbonFootprint-display-container {
+    position: absolute;
+    border: 4px solid rgb(255, 75, 75);
+    background-color: gold;
+    border-radius: 20px;
+    top: 5px;
+    right: 450%;
+    width: 200px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .CarbonFootprint-display {
+    float: left;
+    padding: 5px;
+    border-radius: 5px;
+    color: black;
+  }
+ #button-reset {
+    position: absolute;
+    bottom: 75%;
+    right: 80%;
+    width: 100px;
+    height: 80px;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 9999; /* Adjusted to ensure it's always on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  .go-shop-container {
+    position: absolute;
+    bottom: 10%;
+    right: 2%;
+    width: 100px;
+    height: 100px;
+  }
+  .go-shop-container img {
+    position: absolute;
+    display: block;
     max-height: 100%;
-    width: auto;
-    height: auto;
-}
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+  }
+  .go-shop-container img:hover{
+    transform: scale(1.1);
+  }
+  .time-container{
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    color: blue;
+    
+  
+  }
+  #time{
+    font-size: 25px;
+    font-family: "Arial";
+  }
 
 </style>
 </head>
@@ -151,40 +234,210 @@
 
 <div class="container">
   {% load static %}
-  <div class="central-element">
-    <img src="{% static 'images/output.jpg' %}" alt="placeholder" class="img-fluid">
-  </div>
-
-  <div class="sub-session" id="subSession">
-    <div style="width: 100%; height: 10%; border: none;"></div>
-    <!-- Content of the sub session goes here -->
-    <h2 class="sub-session-content" onclick="refreshPage()">Home</h2>
-    <h2 class="sub-session-content" onclick="alert('SHOP clicked')">Shop</h2>
+   <div class="sub-session" id="subSession">
+    <div style="width: 100%; height: 10%"></div>
+    
+    <a href="{% url 'home' %}"><h2 class="sub-session-content" >HOME</h2></a>
+    <a href="{% url 'shop' %}"><h2 class="sub-session-content" >SHOP</h2></a>
     <h2 class="sub-session-content" onclick="alert('History clicked')">History</h2>
     <h2 class="sub-session-content" onclick="alert('About clicked')">About</h2>
 
-    <h2 class="sub-session-content-logout"><a href="{% url 'home' %}" class="sub-session-content-logout-link">Return</a></h2>  
+    <h2 class="sub-session-content-logout" onclick="alert('log out clicked')">Log Out</h2>
   </div>
-  <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
-</div>
+  
+  <div class="image-container">
+    <img src="{% static 'images/BG.jpg' %}" alt="BG">
+    <img src="{% static 'images/dragon.png' %}" alt="dragon" style="position: absolute;">
 
+
+
+    <div class="go-shop-container">
+        <img src="{% static 'images/go.png' %}" alt="plantTree" onclick="plantTree()">
+      </a>
+    </div>
+
+
+    <div class="bottom-bar">
+      <img src="{% static 'images/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
+      <img src="{% static 'images/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()">
+      <img src="{% static 'images/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
+    </div>
+  </div>
+
+  <div class="cherry-container">
+    <img src="{% static 'images/CHERRY.png' %}" alt="CHERRY" >
+    <p id="cherry_num">{{user.userprofile.cherries}}</p>
+
+
+  <div class="CarbonFootprint-display-container"> 
+    <p id="carbon-footprint">CarbonFootprint: {{ user_profile.carbonFootprint }}/10</p>
+  </div>
+  <div class="time-container"> 
+    <p id="time" >12:00</p>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="toggleSubSession()"></div> <!-- Close the sub-session when clicking on the overlay -->
+</div>
 <button class="button-toggle" onclick="toggleSubSession()">≡</button>
+<button id="button-reset" onclick="resetUserProfile()">Reset Profile</button>
 
-<div class="bottom-bar">
-  <button onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'">Map</button>
-
-  <button onclick="scanAndCheckLocation()">Scan</button>
-  <button onclick="openQRScanner()">Open QR Scanner</button>
-</div>
-
-<div class="coin-display">
-  &#x1FA99; Coins: {{ coins }}
-</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
+
+
+        // var cherry_num_value = user.userprofile.cherries;
+        // // Access the <p> element using its ID
+        // var cherry_num_element = document.getElementById("cherry_num");
+                
+        // // Set the content of the <p> element to the value of the JavaScript variable
+        // cherry_num_element.textContent = cherry_num_value;
+        
+        function toggleSubSession() {
+          var subSession = document.getElementById("subSession");
+          var overlay = document.getElementById("overlay");
+          subSession.classList.toggle("open");
+          overlay.classList.toggle("active");
+        }
+        function refreshPage() {
+            location.reload(); // This line reloads the page
+        }
+        
+//-----------------updateCherriesValue-----------------------------------------------------------------
+// Function to fetch and update cherries value from the server
+function updateCherriesValue() {
+    // Send an AJAX request to fetch the updated cherries value
+    $.ajax({
+        url: '/api/get_cherries_value/',  // URL to your API endpoint that returns the cherries value
+        type: 'GET',
+        success: function(response) {
+            // Update the displayed cherries value with the fetched value
+            var cherry_num_element = document.getElementById("cherry_num");
+            cherry_num_element.textContent = response.cherries_value;
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle errors if any
+            console.log(xhr.status + ": " + xhr.responseText); // Log the error message
+        }
+    });
+}
+//-----------------update carbon footprint-----------------------------------------------------------------
+// Function to fetch and update carbon footprint value from the server
+function updateCarbonFootprint() {
+    // Send an AJAX request to fetch the updated carbon footprint value
+    $.ajax({
+        url: '/api/get_carbon_footprint_value/',  // URL to your API endpoint that returns the carbon footprint value
+        type: 'GET',
+        success: function(response) {
+            // Update the displayed carbon footprint value with the fetched value
+            var carbon_footprint_element = document.getElementById("carbon-footprint");
+            carbon_footprint_element.textContent = "CarbonFootprint: " + response.carbon_footprint_value+"/10";
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle errors if any
+            console.log(xhr.status + ": " + xhr.responseText); // Log the error message
+        }
+    });
+}
+//-----------------carbon footprint-----------------------------------------------------------------
+  // Function to increment carbon footprint value
+
+ $(document).ready(function() {
+            setInterval(function() {
+                $.ajax({
+                    url: '/api/increment_carbon_footprint/',
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#carbon-footprint').text("CarbonFootprint: " + response.new_carbon_footprint_value+"/10");
+                        } else {
+                            console.error('Failed to increment carbon footprint value:', response.error);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.error(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            }, 10000); // Repeat every 10 seconds
+        });
+
+function resetUserProfile() {
+    // Get the CSRF token from the cookie
+    const csrftoken = getCookie('csrftoken');
+        fetch('/reset_user_profile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other headers if needed
+                'X-CSRFToken': csrftoken  // Include the CSRF token in the headers
+            },
+            // Add body if needed
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            // Handle response data as needed
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    // Function to retrieve the CSRF token from cookies
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Check if the cookie name matches the CSRF token pattern
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    // Include the CSRF token in AJAX requests
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                // Only send the token to relative URLs i.e. locally.
+                xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+            }
+        }
+    });
+
+//-----------------calling all the updates-----------------------------------------------------------------
+
+// Call the updateCarbonFootprint function initially
+updateCarbonFootprint();
+
+// Set interval to call the updateCarbonFootprint function every second
+setInterval(updateCarbonFootprint, 1000);
+
+// Call the updateCherriesValue function initially
+updateCherriesValue();
+
+// Set interval to call the updateCherriesValue function every second
+setInterval(updateCherriesValue, 1000);
+
+
+
+
+
+
+
+
+//-----------------qr scanner-----------------------------------------------------------------
 function openQRScanner() {
-            // Redirect to the QR scanner page
-            window.location.href = "{% url 'scanner' %}";
+    // Redirect to the QR scanner page
+  window.location.href = "{% url 'scanner' %}";
+  
 }
 
 function toggleSubSession() {
@@ -195,6 +448,9 @@ function toggleSubSession() {
 }
 function refreshPage() {
     location.reload(); // This line reloads the page
+}
+function plantTree(){
+  window.location.href = "{% url 'tree' %}";
 }
 
 // Function to handle scanning and checking location
@@ -226,7 +482,7 @@ function refreshPage() {
     // Function to calculate the distance between two points
     function calculateDistance(lat1, lon1, lat2, lon2) {
       const R = 6371000; // Radius of the Earth in meters
-      const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+      const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radiansWx
       const dLon = (lon2 - lon1) * (Math.PI / 180);
       const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -294,10 +550,41 @@ function refreshPage() {
         console.error("Geolocation is not supported by your browser.");
       }
     }
+    //-----------------time-----------------------------------------------------------------
+      // function to displayTime
+    function displayTime() {
+      
+      var now = new Date();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var ampm = hours >= 12 ? 'PM' : 'AM';
+      // console.log(hours, minutes, seconds, ampm);
 
-    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      // Convert hours from 24-hour time to 12-hour time
+      hours = hours % 12;
+      hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+      // Add leading zeros to minutes and seconds if they are less than 10
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      var timeString = hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+      
+      document.getElementById('time').innerHTML = timeString;
+  }
+
+  // Call the function initially to display the time
+  displayTime();
+
+  // Call the function every second to update the time
+  setInterval(displayTime, 1000);
+
+
+    
+
+
+
 
 </script>
 

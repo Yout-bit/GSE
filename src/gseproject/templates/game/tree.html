@@ -1,0 +1,442 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plant a Tree</title>
+<style> 
+  
+  
+    .coin-display {
+      position: fixed;
+              top: 10px;
+              right: 10px;
+              background-color: gold;
+              padding: 5px;
+              border-radius: 5px;
+              color: black;
+    }
+    .CarbonFootprint-display {
+      position: fixed;
+              top: 10px;
+              right: 120px;
+              background-color: gold;
+              padding: 5px;
+              border-radius: 5px;
+              color: black;
+    }
+    .countdown {
+      position: fixed;
+              top: 80px;
+              right: 120px;
+              background-color: gold;
+              padding: 5px;
+              border-radius: 5px;
+              color: black;
+    }
+  
+    *{
+      /* border: red 2px solid; */
+      touch-action: manipulation; /* Prevent double-tap zoom */
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      position: relative;
+      min-height: 100vh; /* Ensure the body covers the entire viewport height */
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      overflow-y: hidden; /* Prevent vertical scrolling */
+      background-image: url("images/BG_black.jpg");
+      background-size: cover; /* Adjust as needed */
+      background-repeat: no-repeat;
+      background-position: center center;
+  
+    }
+    .container {
+      position: relative;
+      width: 100%;
+      height: calc(100vh - 60px); /* Adjusted for bottom bar height */
+      overflow: hidden;
+      padding-bottom: 8vh; /* Ensure content doesn't get hidden behind the bottom bar */
+    }
+    .button-toggle {
+      position: fixed;
+      top: 20px;
+      left: 20px; /* Adjusted to top left corner */
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      z-index: 9999; /* Adjusted to ensure it's always on top */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+    }
+    .sub-session {
+      position: absolute;
+      top: 0;
+      left: -40%; /* Adjusted to 40% width */
+      width: 30%;
+      height: 100%;
+      background-color: #007d69;
+      box-shadow: 0 0 10px rgba(215, 90, 90, 0.1);
+      transition: left 0.3s ease;
+      z-index: 3;
+    }
+    .sub-session.open {
+      left: 0; /* Slide in when open */
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 2; /* Adjusted to ensure it's below the button */
+    }
+    .overlay.active {
+      display: block;
+    }
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 8%; /* 8% of viewport height */
+      background-color: #333;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 9999; /* Ensure it's always on top */
+    }
+  
+    .bottom-bar img {
+      width: auto; /* Adjust the width to make the images smaller */
+      max-height: 90%; /* Maintain aspect ratio */
+      transition: transform 0.3s ease; /* Add transition for smooth scaling */
+  }
+  
+  .bottom-bar img:hover {
+      transform: scale(0.9); /* Scale the image down to 90% on hover */
+  }
+  
+    .sub-session-content {
+      padding: 0% 0;
+      text-align: center;
+    }
+    .sub-session-content-logout {
+      padding: 0% 0;
+      text-align: center;
+      position: absolute;
+      bottom: 20%;
+      width: 100%;
+    }
+    .image-container {
+        /* border: red 5px solid; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+  
+    .image-container img {
+          max-height: 100%; /* Ensure the image height doesn't exceed the viewport height */
+          width: auto; /* Ensure the image width doesn't exceed the viewport width */
+          
+    }
+    .cherry-container {
+    position: absolute;
+    border: 4px solid rgb(0, 0, 0);
+    background-color: #fae113;
+    border-radius: 20px;
+    top: 5px;
+    right: 5px;
+    width: 200px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .cherry-container img {
+    position: absolute;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 95%;
+    left:15%;
+  }
+  #cherry_num {
+    position: absolute;
+    right: 40%;
+    color: black;
+    font-size: 35px;
+    top: 0px;
+    left: 97px;
+    font-family: "Arial";
+  }
+    #outting_cherry{
+      position: absolute;
+      color: red;
+      font-size: 25px;
+      font-family: "Arial";
+    }
+    .go-shop-container {
+      position: absolute;
+      bottom: 10%;
+      right: 2%;
+      width: 100px;
+      height: 100px;
+    }
+    .go-shop-container img {
+      position: absolute;
+      display: block;
+      max-height: 100%;
+      transition: transform 0.3s ease; /* Add transition for smooth scaling */
+    }
+    .go-shop-container img:hover{
+      transform: scale(1.1);
+    }
+    html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#backButton {
+  position: fixed;
+    top: 40px;
+    left: 20px;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+#backButton:hover {
+  background-color: #45a049;
+}
+  
+  </style>
+  </head>
+  <body>
+  
+    <div class="container">
+        {% load static %}
+    
+        
+    
+        <div class="sub-session" id="subSession">
+            <div style="width: 100%; height: 10%"></div>
+            
+            <a href="{% url 'home' %}"><h2 class="sub-session-content" >HOME</h2></a>
+            <a href="{% url 'shop' %}"><h2 class="sub-session-content" >SHOP</h2></a>
+            <h2 class="sub-session-content" onclick="alert('History clicked')">History</h2>
+            <h2 class="sub-session-content" onclick="alert('About clicked')">About</h2>
+    
+            <h2 class="sub-session-content-logout" onclick="alert('log out clicked')">Log Out</h2>
+        </div>
+        <div class="image-container">
+            <img src="{% static 'images/BG.jpg' %}" style="z-index: -1;" alt="BG">
+            <img src="{% static 'images/dragon.png' %}" alt="dragon" style="position: absolute;bottom: -95px;left: 300px;width: 30%;height: 65%;">
+            <img id="treeImage1" src="{% static 'images/seed.jpg' %}" alt="Seed">
+            <img id="treeImage2" src="{% static 'images/sprout.jpg' %}" alt="Sprout">
+            <img id="treeImage3" src="{% static 'images/sapling.jpg' %}" alt="Sapling">
+            <img id="treeImage4" src="{% static 'images/tree.jpg' %}" alt="Tree">
+            <button id="plantButton">Plant</button>
+        </div>
+            
+            <div class="bottom-bar">
+                <img src="{% static 'images/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'">
+                <img src="{% static 'images/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()">
+                <img src="{% static 'images/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
+            </div>
+        </div>
+    
+        <div class="cherry-container">
+            <img src="{% static 'images/CHERRY.png' %}" alt="Cherry" >
+            <p id="cherry_num">30</p> <!-- Display cherry count -->
+
+            <div class="countdown">
+                Countdown: <span id="countdownTimer">10</span> seconds
+            </div>
+            
+            <!-- Display additional information -->
+            <div class="coin-display">
+                &#x1FA99; Cherries: {{ cherriesCount }}
+            </div>
+            <div class="CarbonFootprint-display"> 
+                &#x1FA99; CarbonFootprint: {{ CarbonFootprint }}/10
+            </div>
+        </div>
+        <button id="backButton" onclick="goBack()">Back</button>
+        
+        <!-- Overlay for sub-session -->
+        <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
+    </div>
+    
+    <!-- Button to toggle sub-session -->
+    <button class="button-toggle" onclick="toggleSubSession()">≡</button>
+    </div>
+    
+
+  <script>
+  
+  var cherry_num_value = 2;
+          
+          // Access the <p> element using its ID
+          var cherry_num_element = document.getElementById("cherry_num");
+                  
+          // Set the content of the <p> element to the value of the JavaScript variable
+            cherry_num_element.textContent = cherry_num_value;
+          
+          function toggleSubSession() {
+            var subSession = document.getElementById("subSession");
+            var overlay = document.getElementById("overlay");
+            subSession.classList.toggle("open");
+            overlay.classList.toggle("active");
+          }
+          function refreshPage() {
+              location.reload(); // This line reloads the page
+          }
+          
+  
+  
+  function openQRScanner() {
+      // Redirect to the QR scanner page
+    window.location.href = "{% url 'scanner' %}";
+  }
+  
+  function toggleSubSession() {
+    var subSession = document.getElementById("subSession");
+    var overlay = document.getElementById("overlay");
+    subSession.classList.toggle("open");
+    overlay.classList.toggle("active");
+  }
+  function refreshPage() {
+      location.reload(); // This line reloads the page
+  }
+
+  function goBack(){
+    window.history.back();
+  }
+
+
+  
+let stage1 = 'static/images/seed.jpg';
+let stage2 = 'static/images/sprout.jpg';
+let stage3 = 'static/images/sapling.jpg';
+let stage4 = 'static/images/tree.jpg';
+
+let stages = [stage1, stage2, stage3, stage4];
+let currentStage = 0;
+let cherries = 0;
+let cooldownDuration = 3600000; // 1 hour in milliseconds, change for testing if needed
+let plantingInProgress = false; // Flag to track if planting process is in progress
+
+window.onload = function() {
+    // Hide all images initially
+    for (let i = 1; i <= stages.length; i++) {
+        document.getElementById('treeImage' + i).style.display = 'none';
+    }
+
+    document.getElementById('plantButton').addEventListener('click', plantTree);
+    updateCherriesDisplay();
+    checkCooldown();
+};
+
+function plantTree() {
+    if (plantingInProgress) return; // If planting is already in progress, exit
+
+    // Start planting process
+    plantingInProgress = true;
+    countdownTimer(cooldownDuration / 1000); // Start countdown timer
+
+    // Display seed image initially
+    document.getElementById('treeImage1').style.display = 'block';
+
+    // Start growing stages after button click
+    let interval = setInterval(() => {
+        if (currentStage < stages.length - 1) {
+            currentStage++;
+            // Hide all images except the current stage
+            for (let i = 1; i <= stages.length; i++) {
+                document.getElementById('treeImage' + i).style.display = 'none';
+            }
+            // Display the current stage image
+            document.getElementById('treeImage' + (currentStage + 1)).style.display = 'block';
+        } else {
+            clearInterval(interval); // Stop interval when tree is fully grown
+            cherries += 10; // Bonus cherries for growing a tree
+            alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!');
+            plantingInProgress = false; // Reset planting flag
+            checkCooldown(); // Check cooldown for next planting
+        }
+    }, 2000); // Change stage every 2 seconds
+}
+
+function updateCherriesDisplay() {
+  document.getElementById('cherriesCount').innerText = `Cherries: ${cherries}`;
+}
+
+function checkCooldown() {
+    let lastPlantedTime = localStorage.getItem('lastPlantedTime');
+    if (lastPlantedTime) {
+        let timePassed = new Date().getTime() - lastPlantedTime;
+        if (timePassed < cooldownDuration) {
+            // Disable plant button during cooldown
+            document.getElementById('plantButton').disabled = true;
+            // Start countdown timer
+            countdownTimer((cooldownDuration - timePassed) / 1000);
+        } else {
+            // If cooldown ended, enable plant button
+            document.getElementById('plantButton').disabled = false;
+        }
+    }
+}
+
+function countdownTimer(seconds) {
+    // Display countdown timer
+    let timerElement = document.getElementById('countdownTimer');
+    timerElement.textContent = `Cooldown ends in: ${formatTime(seconds)}`;
+    
+    // Update timer every second
+    let countdown = setInterval(() => {
+        seconds--;
+        timerElement.textContent = `Cooldown ends in: ${formatTime(seconds)}`;
+        if (seconds <= 0) {
+            clearInterval(countdown); // Stop countdown when timer reaches zero
+            document.getElementById('plantButton').disabled = false; // Enable plant button
+            timerElement.textContent = ''; // Clear timer display
+        }
+    }, 1000);
+}
+
+function formatTime(seconds) {
+    // Format time as minutes:seconds
+    let minutes = Math.floor(seconds / 60);
+    let remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+}
+</script>
+</head>
+</html>
