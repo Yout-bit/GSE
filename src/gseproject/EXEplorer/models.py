@@ -6,6 +6,8 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     cherries = models.IntegerField(default=20)
     carbonFootprint = models.IntegerField(default=5)
+    pet_visible = models.BooleanField(default=True)
+    next_pet_appearance = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username + "'s Profile"
