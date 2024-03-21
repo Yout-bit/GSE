@@ -58,12 +58,146 @@
 <div class="image-container">
 
     <div class="scan_icon_container" >
-      <img src="{% static 'images/scan_icon.png' %}" alt="scan_icon" onclick="scanAndCheckLocation()">
+      <img src="{% static 'images/scan_icon.png' %}" alt="scan_icon" onclick="scanForCoordinate()">
     </div>
 
     
     <div class="start_button_container" >
-      <img src="{% static 'images/START.png' %}" alt="start_button" onclick="scanAndCheckLocation()">
+      <img src="{% static 'images/START.png' %}" alt="start_button" onclick="scanForCoordinate()">
     </div>
 </div>
+
+<script>
+  
+  
+
+  
+  // Predefined array of buildings with names and coordinates
+  const buildings = [
+      { name: "Exeter_One_Block_C", location: { lat: 50.7400822, lng: -3.5383057 } },
+      { name: "sport park", location: { lat: 50.73777604517844, lng: -3.5372411677882427 } },
+      { name: "INTO Exeter", location: { lat: 50.736054286171395, lng: -3.533934551559336 } },
+      { name: "Great Hall", location: { lat: 50.73549282936743, lng: -3.534577358376538 } },
+      { name: "Forum", location: { lat: 50.73552008008422, lng: -3.533805811113204 } },
+      { name: "Exeter library", location: { lat: 50.735493087851445, lng: -3.533294030128004 } },
+      { name: "Devonshire House", location: { lat: 50.73494324268427, lng: -3.534412366357129 } },
+      { name: "Queens Building", location: { lat: 50.73449636375293, lng: -3.5346366654312993 } },
+      { name: "Old Library", location: { lat: 50.733423968372335, lng: -3.534261025796802 } },
+      { name: "Hatherly Laboratories", location: { lat: 50.73403019226748, lng: -3.5331800569656564 } },
+      { name: "Exeter Northcott Theatre", location: { lat: 50.73581601104062, lng: -3.535169181217625 } },
+      { name: "Peter Chalk Centre", location: { lat: 50.736291440802674, lng: -3.5359763384371847 } },
+      { name: "Laver Building", location: { lat: 50.737386322677416, lng: -3.5334687416050254 } },
+      { name: "Harrison Building", location: { lat: 50.737507526268054, lng: -3.532889295495887 } },
+      { name: "SWIOT Building", location: { lat: 50.737908686355524, lng: -3.5304422433978604 } },
+      { name: "Innovation Centre", location: { lat: 50.73826130515783, lng: -3.531193928475741 } },
+      { name: "XFi Building", location: { lat: 50.736058501012415, lng: -3.5302494398729363 } },
+      { name: "Building:One", location: { lat: 50.73571302267035, lng: -3.529901119084657 } },
+      { name: "Streatham Court", location: { lat: 50.7358055379937, lng: -3.5313437765806253 } },
+      { name: "Lemon Grove", location: { lat: 50.73503423639206, lng: -3.529732856785485 } }
+      // Add more buildings as needed
+    ];
+  
+  // Function to calculate the distance between two points
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // Radius of the Earth in meters
+    const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in meters
+    return distance;
+  }
+  
+  // Function to find buildings within the specified range
+  function findBuildingsWithinRange(latitude, longitude, maxRange) {
+    const userLocation = { lat: latitude, lng: longitude };
+    const buildingsWithinRange = [];
+  
+    buildings.forEach((building) => {
+      const distance = calculateDistance(
+        userLocation.lat,
+        userLocation.lng,
+        building.location.lat,
+        building.location.lng
+      );
+  
+      if (distance <= maxRange) {
+        buildingsWithinRange.push(building);
+      }
+    });
+  
+    return buildingsWithinRange;
+  }
+  
+  // Function to handle scanning and checking location
+  // Function to handle scanning and checking location
+  function scanForCoordinate() {
+    // Check if geolocation is supported
+    if (navigator.geolocation) {
+      // Get the current position
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Extract latitude and longitude from the position object
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          console.log("Latitude: " + latitude);
+          console.log("Longitude: " + longitude);
+          // Define the maximum range in meters
+          const maxRange = 25; // Maximum range in meters
+
+          // Find buildings within the specified range
+          const buildingsInRange = findBuildingsWithinRange(latitude, longitude, maxRange);
+
+          if (buildingsInRange.length > 0) {
+            // Show the name of the nearest building
+            const nearestBuilding = buildingsInRange[0];
+
+            // Check if the building is the same as the last one
+            if (checkQRCodeInCookies(nearestBuilding.name)) {
+              // If the building has been scanned before, show a message
+              alert("Nearest Building: " + nearestBuilding.name  + " has been scanned before. Please try again later.");
+            } else {
+              // Add 10 to cherry_num_value
+              cherry_num_value += 10;
+              // Add nearestBuilding.name to cookies
+              document.cookie = nearestBuilding.name;
+
+              // Update the cherry_num_element on the page
+              cherry_num_element.textContent = cherry_num_value;
+
+              // Show a success message
+              alert("Nearest Building: " + nearestBuilding.name + "\n" + "Exeter Green POWER absorbed: 10");
+            }
+          } else {
+            // If no buildings are within range, show a message
+            alert("Your location is too far from any building.");
+          }
+        },
+        (error) => {
+          // Handle any errors that may occur
+          console.error("Error getting location:", error.message);
+        }
+      );
+    } else {
+      // Geolocation is not supported by the browser
+      console.error("Geolocation is not supported by your browser.");
+    }
+  }
+  // Function to check if building exists in cookies
+  function checkQRCodeInCookies(buildingName) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.indexOf(buildingName) === 0) {
+        return true; // buildingName found in cookies
+      }
+    }
+    return false; // buildingName not found in cookies
+  }
+  
+  </script>
 {% endblock %}
