@@ -64,10 +64,15 @@
             },
             body: JSON.stringify({}),
         })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Request failed!');
+        })
         .then(data => {
-            // Check if the response JSON is blank (or effectively empty)
-            if (Object.keys(data.json()).length === 0) {
-                console.log('Nothing');
+            if (Object.keys(data).length === 0) {
+                petDisappear();
             // Handle blank response here (e.g., show a message to the user)
         } else {
             petAppear();
