@@ -195,7 +195,7 @@ body::before {
   background-color: gold;
   border-radius: 20px;
   top: 5px;
-  right: 450%;
+  right: 1%;
   width: 200px;
   height: 60px;
   display: flex;
