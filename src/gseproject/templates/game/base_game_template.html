@@ -43,17 +43,11 @@
           Log Out
         </h2>
       </div>
-
+      
       <div class="image-container">
         <div class="content">{% block content %} {% endblock %}</div>
 
-        <div class="plantTree-container">
-          <img
-            src="{% static 'images/plantTree.jpg' %}"
-            alt="plantTree"
-            onclick="redirectToPage('tree/')"
-          />
-        </div>
+       
 
         <div class="bottom-bar">
           <img src="{% static 'images/MAP.png' %}" alt="MAP"
@@ -76,9 +70,10 @@
         <p id="cherry_num">{{user.userprofile.cherries}}</p>
 
         <div class="CarbonFootprint-display-container">
-          <p id="carbon-footprint">
-            CarbonFootprint: {{ user_profile.carbonFootprint }}/10
-          </p>
+          <div class="energy-bar-container">
+            <div id="energy-bar" class="energy-bar" style="width: 0%;"></div>
+        </div>
+        <p>Carbon Footprint: <span id="carbon-footprint">{{ user_profile.carbonFootprint }}</span>/10</p>
         </div>
 
         <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
