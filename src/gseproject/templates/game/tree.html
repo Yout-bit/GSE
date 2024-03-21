@@ -96,6 +96,9 @@
     <p id="plantTree-text"> Click the tree to start planting!</p>
     <img id="plantButton" src="{% static 'images/treebutton.jpg' %}" alt="treebutton" onclick="plantTree()">
 </div>
+<audio id="myAudio" controls>
+    <source src="{% static 'audio/y2mate.is - A Lonely Cherry Tree -D5L36JDKxR0-192k-1710999955.mp3' %}" type="audio/mpeg">
+</audio>
 </div>
 <img id="treeImage1" src="{% static 'images/seed.jpg' %}" alt="Seed">
 <img id="treeImage2" src="{% static 'images/sprout.jpg' %}" alt="Sprout">
@@ -133,6 +136,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    document.addEventListener('click', function() {
+    document.getElementById('myAudio').play();
+});
 // -------Select the close button element-----------------------------------
 const closeButton = document.getElementById('close-Button');
 
@@ -226,7 +232,7 @@ function countdownTimer(seconds) {
                 incrementCherriesValue(); // Increment cherries value when tree is fully grown
                 decrementCarbonValue(); // Decrement carbon footprint value by (3) when tree is fully grown
                 $('#congratulationsModal').modal('show');
-                // alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
+                alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
                 plantingInProgress = false; // Reset planting flag
             }
         }
