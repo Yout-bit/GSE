@@ -119,7 +119,7 @@ def scan_view(request):
 def petDisappear(request):
     player, _ = UserProfile.objects.get_or_create(user=request.user)
     player.pet_visible = False
-    player.next_pet_appearance = timezone.now() + timedelta(seconds=10)
+    player.next_pet_appearance = timezone.now() + timedelta(minutes=60)
     player.save()
     
     return JsonResponse({"visible":player.pet_visible, "nextshow":player.next_pet_appearance})
