@@ -219,3 +219,11 @@
   #backButton:hover {
     background-color: #45a049;
   }
+
+  .start_button {
+    position: absolute;
+    bottom: 10%;
+    width: 100px;
+    height: 100px;
+    border: red 2px solid;
+  }
