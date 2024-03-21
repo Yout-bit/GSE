@@ -1,0 +1,288 @@
+* {
+  /* border: red 2px solid; */
+  touch-action: manipulation;
+  /* Prevent double-tap zoom */
+}
+
+body::before {
+  content: ""; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-attachment: fixed;
+  z-index: -1; 
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  background-image: url("/static/images/BG_black.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  width: 100%;
+  height: 50%;
+  background-image: url('/static/images/BG.jpg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding-bottom: 8vh;
+}
+
+.button-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  /* Adjusted to top left corner */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+  /* Adjusted to ensure it's always on top */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.sub-session {
+  position: absolute;
+  top: 0;
+  left: -40%;
+  /* Adjusted to 40% width */
+  width: 30%;
+  height: 100%;
+  background-color: #007d69;
+  box-shadow: 0 0 10px rgba(215, 90, 90, 0.1);
+  transition: left 0.3s ease;
+  z-index: 3;
+}
+
+.sub-session.open {
+  left: 0;
+  /* Slide in when open */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  z-index: 2;
+  /* Adjusted to ensure it's below the button */
+}
+
+.overlay.active {
+  display: block;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 8%;
+  /* 8% of viewport height */
+  background-color: #333;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 9999;
+  /* Ensure it's always on top */
+}
+
+.bottom-bar img {
+  width: auto;
+  /* Adjust the width to make the images smaller */
+  max-height: 90%;
+  /* Maintain aspect ratio */
+  transition: transform 0.3s ease;
+  /* Add transition for smooth scaling */
+}
+
+.bottom-bar img:hover {
+  transform: scale(0.9);
+  /* Scale the image down to 90% on hover */
+}
+
+.sub-session-content {
+  padding: 0% 0;
+  text-align: center;
+}
+
+.sub-session-content-logout {
+  padding: 0% 0;
+  text-align: center;
+  position: absolute;
+  bottom: 20%;
+  width: 100%;
+}
+
+.image-container {
+  /* border: red 5px solid; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.image-container img {
+  max-height: 100%;
+  /* Ensure the image height doesn't exceed the viewport height */
+  width: auto;
+  /* Ensure the image width doesn't exceed the viewport width */
+}
+
+.cherry-container {
+  position: absolute;
+  border: 4px solid rgb(255, 75, 75);
+  background-color: white;
+  border-radius: 20px;
+  top: 5px;
+  right: 5px;
+  width: 200px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cherry-container img {
+  position: absolute;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 95%;
+  left: 5%;
+}
+
+#cherry_num {
+  float: left;
+  position: absolute;
+  right: 40%;
+  color: red;
+  font-size: 35px;
+  font-family: "Arial";
+}
+
+#outting_cherry {
+  position: absolute;
+  color: red;
+  font-size: 25px;
+  font-family: "Arial";
+}
+
+.CarbonFootprint-display-container {
+  position: absolute;
+  border: 4px solid rgb(255, 75, 75);
+  background-color: gold;
+  border-radius: 20px;
+  top: 5px;
+  right: 450%;
+  width: 200px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CarbonFootprint-display {
+  float: left;
+  padding: 5px;
+  border-radius: 5px;
+  color: black;
+}
+
+#button-reset {
+  position: absolute;
+  bottom: 75%;
+  right: 80%;
+  width: 100px;
+  height: 80px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 9999;
+  /* Adjusted to ensure it's always on top */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.go-shop-container {
+  position: absolute;
+  bottom: 30%;
+  right: 2%;
+  width: 100px;
+  height: 100px;
+}
+
+.go-shop-container img {
+  position: absolute;
+  display: block;
+  max-height: 100%;
+  transition: transform 0.3s ease;
+  /* Add transition for smooth scaling */
+}
+
+.go-shop-container img:hover {
+  transform: scale(1.1);
+}
+
+  .plantTree-container {
+    position: absolute;
+    bottom: 10%;
+    right: 2%;
+    width: 100px;
+    height: 100px;
+  }
+  .plantTree-container img {
+    position: absolute;
+    display: block;
+    max-height: 100%;
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+  }
+  .plantTree-container img:hover{
+    transform: scale(1.1);
+  }
+
+
+#backButton {
+  position: fixed;
+  top: 40px;
+  left: 20px;
+  background-color: #4CAF50;
+  /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+#backButton:hover {
+  background-color: #45a049;
+}

@@ -1,0 +1,86 @@
+{% extends 'game/base_game_template.html' %}
+
+
+{% block title %}EXEPET{% endblock %}
+
+{% block content %}
+
+
+
+{% load static %}
+<style>
+    .go-button {
+        position: absolute;
+        bottom: 10%;
+        right: 2%;
+        width: 100px;
+        height: 100px;
+    }
+
+    .pet {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+</style>
+
+<div class="image-container">
+
+    <div class="pet">
+        <img id="DragonImage" src="{% static 'images/dragon.png' %}" alt="dragon">
+    </div>
+
+    <div class="go-button">
+        <a href="{% url 'shop' %}">
+            <img src="{% static 'images/go.png' %}" alt="execute">
+        </a>
+    </div>
+
+</div>
+
+<script>
+    function petDisappear() {
+        console.log("Pet Disappeared")
+        document.getElementById("DragonImage").style.display = 'none';
+    }
+
+    function petAppear() {
+        document.getElementById("DragonImage").style.display = 'block';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        petCheckCounter();
+    });
+    function petCheckCounter() {
+        fetch('{% url "pet-check" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Request failed!');
+        })
+        .then(data => {
+            if (Object.keys(data).length === 0) {
+                petDisappear();
+            // Handle blank response here (e.g., show a message to the user)
+        } else {
+            petAppear();
+            // Handle non-blank response here
+        }
+        })
+            .catch((error) => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+
+</Script>
+{% endblock %}

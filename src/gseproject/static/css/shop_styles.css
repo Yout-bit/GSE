@@ -1,0 +1,56 @@
+#tools-container {
+    /* position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 40%; */
+    position: absolute;
+    left: 2.5%;
+    top: 5%;
+    width : 100%;
+    max-width : 95%;
+    height: 400px;
+    border: red 2px solid;
+  }
+  .shop-container{
+    position: absolute;
+    width: 80%;
+    height: 60%;
+    max-width : 500px;
+    max-height: 600px;
+    border: red 2px solid;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    top: 15%;
+  }
+
+  .tool {
+    position: relative;
+    max-width: 200px;
+    text-align: center;
+    border : 2px solid red;
+  }
+
+  .tool img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+  }
+
+  .tool p {
+    margin: 0;
+    font-size: 20px;
+    color: white;
+  }
+  .start_button {
+    position: absolute;
+    bottom: 10%;
+    width: 100px;
+    height: 100px;
+    border: red 2px solid;
+  }

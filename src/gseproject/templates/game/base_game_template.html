@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EXEPET</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+
+    {% load static %}
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href=" {% static 'css/styles.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href=" {% static 'css/game_styles.css' %}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      {% load static %}
+      <div class="sub-session" id="subSession">
+        <div style="width: 100%; height: 10%"></div>
+
+        <a href="{% url 'home' %}"><h2 class="sub-session-content">Home</h2></a>
+        <a href="{% url 'game' %}"><h2 class="sub-session-content">Game</h2></a>
+        <a href="{% url 'shop' %}"><h2 class="sub-session-content">Shop</h2></a>
+        <h2 class="sub-session-content" onclick="resetUserProfile()">Reset</h2>
+        <a href="{% url 'logout' %}"><h2 class="sub-session-content-logout">Log Out</h2></a>
+      </div>
+
+      <div class="image-container">
+        <div class="content">{% block content %} {% endblock %}</div>
+
+        <div class="plantTree-container">
+          <img
+            src="{% static 'images/plantTree.jpg' %}"
+            alt="plantTree"
+            onclick="redirectToPage('tree/')"
+          />
+        </div>
+
+        <div class="bottom-bar">
+          <img src="{% static 'images/MAP.png' %}" alt="MAP"
+          onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
+          <img
+            src="{% static 'images/SCAN.png' %}"
+            alt="SCAN"
+            onclick="scanAndCheckLocation()"
+          />
+          <img
+            src="{% static 'images/QR_CODE.png' %}"
+            alt="QRCODE"
+            onclick="redirectToPage('scanner/')"
+          />
+        </div>
+      </div>
+
+      <div class="cherry-container">
+        <img src="{% static 'images/CHERRY.png' %}" alt="CHERRY" />
+        <p id="cherry_num">{{user.userprofile.cherries}}</p>
+
+        <div class="CarbonFootprint-display-container">
+          <p id="carbon-footprint">
+            CarbonFootprint: {{ user_profile.carbonFootprint }}/10
+          </p>
+        </div>
+
+        <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
+        <!-- Close the sub-session when clicking on the overlay -->
+      </div>
+      <button class="button-toggle" onclick="toggleSubSession()">≡</button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static 'js/buildings.js' %}"></script>
+    <script src="{% static 'js/base_game_template.js' %}"></script>
+    <script>
+      // Call the updateCarbonFootprint function initially
+      updateCarbonFootprint();
+
+      // Set interval to call the updateCarbonFootprint function every second
+      setInterval(updateCarbonFootprint, 1000);
+
+      // Call the updateCherriesValue function initially
+      updateCherriesValue();
+
+      // Set interval to call the updateCherriesValue function every second
+      setInterval(updateCherriesValue, 1000);
+    </script>
+  </body>
+</html>

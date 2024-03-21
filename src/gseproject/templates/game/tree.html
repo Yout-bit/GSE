@@ -1,0 +1,379 @@
+
+{% extends 'game/base_game_template.html' %}
+
+
+{% block title %}Plant a Tree{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<style> 
+ 
+    .countdown {
+      position: fixed;
+      top: 80px;
+      right: 120px;
+      background-color: gold;
+      padding: 5px;
+      border-radius: 5px;
+      color: black;
+    }
+
+.start-container {
+    /*Using display: flex with flex-direction: column: 
+    This approach uses flexbox to create a column layout. 
+    All child elements will be stacked vertically within their container.*/
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(81, 163, 135);     /* Background color */
+    margin: 20px; /* Margin around the container */
+    border-radius: 10px; /* Rounded corners */
+    padding: 20px; /* Padding inside the container */
+    display: flex; /* Flexbox layout */
+    align-items: center; /* Align items vertically */
+}
+
+/* Style for the plant button */
+#plantButton{
+    width: 250px; /* Set the maximum width */
+    height: auto; /* Allow the height to adjust proportionally */
+    margin-right: 10px; /* Margin between button and text */
+}
+#plantButton:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(1.1); /* Slightly enlarge the element */
+}
+
+/* Style for the text */
+#plantTree-text {
+    color: #333; /* Text color */
+}
+#plantTree-text {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  top: 80%;
+  color: white;
+}
+#resetButton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block; /* Change display property to block */
+    margin: 0 auto; /* Set left and right margins to auto to center horizontally */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+#close-Button {
+    background-color: rgb(255, 145, 0);
+    position: fixed; /* or absolute, depending on your needs */
+    top:14%;
+    left: 64%;
+    transform: translate(-50%, -50%);
+}
+/* Custom CSS to adjust the modal position */
+.modal-dialog-centered-at-top {
+    margin-top: 10vh; /* Adjusts the top margin to position the modal closer to the top */
+    display: flex; /* Enables flexbox for this element */
+    justify-content: center; /* Centers the modal horizontally */
+}
+
+/* Ensures the modal is centered horizontally at all times */
+@media (min-width: 576px) {
+    .modal-dialog-centered-at-top {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+</style>
+<button id="resetButton">Reset</button>
+<div class="start-container">
+    <p id="plantTree-text"> Click the tree to start planting!</p>
+    <img id="plantButton" src="{% static 'images/treebutton.jpg' %}" alt="treebutton" onclick="plantTree()">
+</div>
+<audio id="myAudio" controls>
+    <source src="{% static 'audio/A Lonely Cherry Tree.mp3' %}" type="audio/mpeg">
+</audio>
+</div>
+<img id="treeImage1" src="{% static 'images/seed.png' %}" alt="Seed">
+<img id="treeImage2" src="{% static 'images/sprout.png' %}" alt="Sprout">
+<img id="treeImage3" src="{% static 'images/sapling.png' %}" alt="Sapling">
+<img id="treeImage4" src="{% static 'images/tree.png' %}" alt="Tree">
+
+
+<div class="countdown">
+    <p id="countdownTimer">not started</p> 
+</div>
+<!-- Modal -->
+<div class="modal fade" id="congratulationsModal" tabindex="-1" role="dialog" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="congratulationsModalLabel">Congratulations!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Congratulations! You have grown a full tree and earned 10 bonus cherries, carbon footprint reduced by 1!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.addEventListener('click', function() {
+    document.getElementById('myAudio').play();
+});
+
+const closeButton = document.getElementById('close-Button');
+
+
+const staticImg = "{% static 'images/icons8-close-50.png' %}";
+const animatedImg = "{% static 'images/icons8-close.gif' %}";
+
+
+closeButton.addEventListener('mouseover', () => {
+  closeButton.src = animatedImg;
+});
+
+
+closeButton.addEventListener('mouseout', () => {
+  closeButton.src = staticImg;
+});
+
+ document.getElementById('resetButton').style.display = 'none';
+// Define the tree stages
+let stage1 = 'static/images/seed.png';
+let stage2 = 'static/images/sprout.png';
+let stage3 = 'static/images/sapling.png';
+let stage4 = 'static/images/tree.png';
+
+let stages = [stage1, stage2, stage3, stage4];
+let currentStage = 1;
+let cherriesAdd = 10;
+let countdownTime = 40000;
+let plantingInProgress = false; // Flag to track if planting process is in progress
+hideAllImages();
+window.onload = function() {
+    // Hide all images initially
+    for (let i = 1; i <= stages.length; i++) {
+        document.getElementById('treeImage' + i).style.display = 'none';
+    }  
+};
+function plantTree() {
+    if (plantingInProgress) return; // If planting is already in progress, exit
+
+    // Start planting process
+    plantingInProgress = true;
+    countdownTimer(countdownTime / 1000); 
+
+    // Display seed image initially
+    document.getElementById('treeImage1').style.display = 'block';
+
+    // Start growing stages after button click
+    let interval = setInterval(() => {
+                                    
+        if (currentStage < stages.length) {
+            currentStage++;
+            // Hide all images except the current stage
+            for (let i = 1; i <=stages.length; i++) {
+                document.getElementById('treeImage' + i).style.display = 'none';
+            }
+            // Display the current stage image
+            document.getElementById('treeImage' + (currentStage)).style.display = 'block';
+            console.log('Current stage(1,2,3,4):', currentStage); // Log the current stage
+            if(currentStage === stages.length){
+                console.log('Tree is fully grown!'+currentStage); // Log when tree is fully grown
+                
+                clearInterval(interval); // Stop interval when tree is fully grown  
+                plantingInProgress = false; // Reset planting flag
+            }
+            
+        } 
+    }, 10000); // Change stage every (10) seconds
+}
+
+
+
+function countdownTimer(seconds) {
+    // Display countdown timer
+    let timerElement = document.getElementById('countdownTimer');
+    timerElement.textContent = `Countdown ends in: ${formatTime(seconds)}`;
+    
+    // Update timer every second
+    let countdown = setInterval(() => {
+        seconds--;
+        timerElement.textContent = `Countdown ends in: ${formatTime(seconds)}`;
+        if (seconds <= 0) {
+            clearInterval(countdown); // Stop countdown when timer reaches zero
+            document.getElementById('plantButton').disabled = false; // Enable plant button
+            timerElement.textContent = ''; // Clear timer display
+            if (currentStage === stages.length) {
+                incrementCherriesValue(); // Increment cherries value when tree is fully grown
+                decrementCarbonValue(); // Decrement carbon footprint value by (3) when tree is fully grown
+                $('#congratulationsModal').modal('show');
+                alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
+                plantingInProgress = false; // Reset planting flag
+            }
+        }
+    }, 1000);
+}
+
+function formatTime(seconds) {
+    // Format time as minutes:seconds
+    let minutes = Math.floor(seconds / 60);
+    let remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+}
+
+document.getElementById('plantButton').addEventListener('click', function() {
+
+    // Check if plantingInProgress is true
+    if (plantingInProgress) {
+        // Get all elements with the class 'start-container'
+        var containers = document.getElementsByClassName('start-container');
+
+        // Loop through each container and hide them
+        for (var i = 0; i < containers.length; i++) {
+            containers[i].style.display = 'none';
+        }
+    }
+});
+
+function hideAllImages() {
+    // Get all images by their IDs
+    var imageIds = ['treeImage1', 'treeImage2', 'treeImage3', 'treeImage4'];
+
+    // Loop through each image ID and hide the corresponding image
+    for (var i = 0; i < imageIds.length; i++) {
+        var image = document.getElementById(imageIds[i]);
+        if (image) {
+            image.style.display = 'none';
+        }
+    }
+}
+
+function hideContainer() {
+
+    // Check if plantingInProgress is true
+    if (plantingInProgress) {
+        // Get all elements with the class 'start-container'
+        var containers = document.getElementsByClassName('start-container');
+
+        // Loop through each container and hide them
+        for (var i = 0; i < containers.length; i++) {
+            containers[i].style.display = 'none';
+        }
+    }
+}
+function showContainer() {
+    // Get all elements with the class 'start-container'
+    var containers = document.getElementsByClassName('start-container');
+
+    // Loop through each container and make them visible
+    for (var i = 0; i < containers.length; i++) {
+        containers[i].style.display = 'block';
+    }
+}
+
+
+function incrementCherriesValue() {
+    // Send an AJAX request to fetch the updated cherries value
+   $.ajax({
+        url: '/api/get_cherries_value/',  // URL to the API endpoint that returns the cherries value
+        type: 'GET',
+        success: function(response) {
+            // Increment the cherries value by 10
+            var currentCherries = response.cherries_value;
+            var updatedCherries = parseInt(currentCherries) + 10;
+            console.log('updated Cherries:', updatedCherries);
+            
+            // Send another AJAX request to update the cherries value on the server
+            $.ajax({
+                url: '/api/update_cherries_value/',
+                type: 'POST',
+                data: { cherries_value: updatedCherries },
+                success: function(response) {
+                    if (response.success) {
+                        // Update the displayed cherries value with the updated value
+                        var cherryNumElement = document.getElementById("cherry_num");
+                        cherryNumElement.textContent = updatedCherries;
+                    } else {
+                        console.error('Failed to update cherries value:', response.error);
+                        
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                    
+                }
+            });
+        },
+        error: function(xhr, errmsg, err) {
+            // Handle errors if any
+            console.log(xhr.status + ": " + xhr.responseText); // Log the error message
+        }
+    });
+}
+function decrementCarbonValue() {
+    // Send an AJAX request to decrement the carbon footprint on the server
+    $.ajax({
+        url: '/api/decrement_carbon_footprint/', // Your API endpoint
+        type: 'POST',
+        data: {
+            
+        },
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'), // Ensure CSRF token is included if needed
+        },
+        success: function(response) {
+            if (response.success) {
+                // Update the displayed carbon footprint value with the new value from the response
+                var carbonValueElement = document.getElementById("carbon_num");
+                carbonValueElement.textContent = response.new_carbon_footprint_value; // Update to match the exact response structure
+            } else {
+                console.error('Failed to decrement carbon footprint:', response.error);
+                
+            }
+        },
+        error: function(xhr, errmsg, err) {
+            console.error(xhr.status + ": " + xhr.responseText);
+            
+        }
+    });
+}
+
+
+// reset button
+var resetButton = document.getElementById('resetButton');
+
+
+resetButton.addEventListener('click', function() {
+    // Reset the variables to their initial values
+    currentStage = 1;
+    cherries = 0;
+    let countdownTime = 40000;
+    plantingInProgress = false;
+    hideAllImages();
+    showContainer();
+    console.log("currentStage: " + currentStage);
+    console.log("cherries: " + cherries);
+    console.log("plantingInProgress: " + plantingInProgress);
+});
+
+</script>
+
+
+{% endblock %}

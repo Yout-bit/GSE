@@ -1,0 +1,105 @@
+{% extends 'game/base_game_template.html' %}
+
+
+{% block title %}Shop{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href=" {% static 'css/shop_styles.css' %}">
+
+<div class="shop-container">
+    <div id="tools-container">
+        <div class="tool" onclick="selectTool(10, this)">
+            <img src="{% static 'images/SHOWER.png' %}" alt="Tool 1">
+            <p id="tool1" style="background-color: #fae113; border-radius: 20px;color: black;"><img
+                    src="{% static 'images/CHERRY.png' %}" alt="Cherry"
+                    style="width: 30px; height: 36px; padding-top: 6px;">10</p>
+        </div>
+
+        <div class="tool" onclick="selectTool(20, this)" style="top: -160px; left: 210px;">
+            <img src="{% static 'images/SHOVEL.png' %}" alt="Tool 2">
+            <p id="tool2" style="background-color: #fae113; border-radius: 20px;color: black;"><img
+                    src="{% static 'images/CHERRY.png' %}" alt="Cherry"
+                    style="width: 30px; height: 36px; padding-top: 6px;">20</p>
+        </div>
+
+        <div class="tool" onclick="selectTool(30, this)" style="top: -160px; left: 110px;">
+            <img src="{% static 'images/PLANT FOOD.png' %}" alt="Tool 3">
+            <p id="tool3" style="background-color: #fae113; border-radius: 20px;color: black;"><img
+                    src="{% static 'images/CHERRY.png' %}" alt="Cherry"
+                    style="width: 30px; height: 36px; padding-top: 6px;">30</p>
+        </div>
+    </div>
+    <img src="{% static 'images/START.png' %}" alt="start" class="start_button" onclick="startPetWalk()">
+</div>
+<script>
+    var selectedTools = []; // Array to store selected tools
+
+    function selectTool(cherryCount, element) {
+        // Change background color of the selected tool
+        element.style.backgroundColor = '#e18d00';
+        element.style.padding = '2px';
+        element.style.paddingBottom = '8px';
+        element.style.paddingTop = '8px';
+        element.style.borderRadius = '10px';
+
+        // Add the selected tool and its cherry count to the array
+        selectedTools.push({ cherryCount: cherryCount, elementId: element.id });
+    }
+
+    function deductCherryCount() {
+        var totalCherryCount = 0;
+
+        // Calculate the total cherry count
+        for (var i = 0; i < selectedTools.length; i++) {
+            totalCherryCount += selectedTools[i].cherryCount;
+        }
+
+        var cherryNumElement = document.getElementById("cherry_num");
+        var cherryNumValue = parseInt(cherryNumElement.textContent);
+
+        // Check if there are enough cherries
+        if (cherryNumValue >= totalCherryCount) {
+            // Deduct the cherry count
+            cherryNumValue -= totalCherryCount;
+            cherryNumElement.textContent = cherryNumValue;
+
+            // Reset selected tools
+            for (var i = 0; i < selectedTools.length; i++) {
+                var element = document.getElementById(selectedTools[i].elementId);
+                element.style.backgroundColor = '#fae113'; // Reset background color
+            }
+            selectedTools = []; // Clear the array
+        } else {
+            alert("Not enough cherries!");
+        }
+    }
+
+    function startPetWalk() {
+        fetch('{% url "start-pet-walk" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    redirectToPage('/game')
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then((data) => {
+                console.log(data);
+                deductCherryCount();
+            })
+            .catch((error) => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+</script>
+
+{% endblock %}
