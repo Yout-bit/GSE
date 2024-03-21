@@ -11,7 +11,6 @@ from django.db import models
 def home_view(request):
     return render(request, 'home.html')
 
-
 def health(request):
     state = {"status": "UP"}
     return JsonResponse(state)
@@ -59,14 +58,11 @@ def handle_scanned_number(request):
 @login_required
 def reset_user_profile(request):
     if request.method == 'POST':
-        # Retrieve the user profile associated with the current user
         user_profile = request.user.userprofile
         
-        # Set all the fields of the user profile to their initial values
         user_profile.carbonFootprint = 5
-        user_profile.cherries = 20  # Assuming you've added the cherries field
+        user_profile.cherries = 20  #
         
-        # Save the updated user profile
         user_profile.save()
         
         return JsonResponse({'success': True})
@@ -74,58 +70,32 @@ def reset_user_profile(request):
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
     
 def get_carbon_footprint_value(request):
-    # Fetch the current user's carbon footprint value
-
-    carbon_footprint_value = request.user.userprofile.carbonFootprint
-
-    # Return the value as a JSON response
-    return JsonResponse({'carbon_footprint_value': carbon_footprint_value})
-
-
+    return JsonResponse({'carbon_footprint_value': request.user.userprofile.carbonFootprint})
 
 def increment_carbon_footprint(request):
     if request.method == 'POST':
-        
         user_profile = request.user.userprofile
-        
-        # Increment the carbon footprint value by 1
-        user_profile.carbonFootprint += 1
-
-        # Check if the carbon footprint exceeds 10
-        if user_profile.carbonFootprint > 10:
-            user_profile.carbonFootprint = 10
+        if user_profile.carbonFootprint < 10:
+            user_profile.carbonFootprint += 1
         user_profile.save()
         
-        # Return a JSON response indicating success and the new carbon footprint value
         return JsonResponse({'success': True, 'new_carbon_footprint_value': user_profile.carbonFootprint})
     else:
-        # Return a JSON response with an error message if the request method is not POST
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
 
 def decrement_carbon_footprint(request):
     if request.method == 'POST':
         user_profile = request.user.userprofile
-        
-        # Decrement the carbon footprint value by 2
-        user_profile.carbonFootprint -= 2
-
-        # Check if the carbon footprint goes below 0
-        if user_profile.carbonFootprint < 0:
-            user_profile.carbonFootprint = 0
-
-        # Save the updated profile
+        if user_profile.carbonFootprint > 0:
+            user_profile.carbonFootprint = min(user_profile.carbonFootprint - 2, 0)
         user_profile.save()
         
-        # Return a JSON response indicating success and the new carbon footprint value
         return JsonResponse({'success': True, 'new_carbon_footprint_value': user_profile.carbonFootprint})
     else:
-        # Return a JSON response with an error message if the request method is not POST
         return JsonResponse({'success': False, 'error': 'Method not allowed'}, status=405)
     
 def get_cherries_value(request):
-    cherries_value = request.user.userprofile.cherries
-    # Return the value as a JSON response
-    return JsonResponse({'cherries_value': cherries_value})
+    return JsonResponse({'cherries_value': request.user.userprofile.cherries})
 
 @login_required
 def update_cherries_value(request):
