@@ -68,6 +68,11 @@
     cursor: pointer;
     border-radius: 10px;
 }
+#myAudio{
+    position: fixed; /* or absolute, depending on your needs */
+    top:70%;
+    left: 1%;
+}
 #close-Button {
     background-color: rgb(255, 145, 0);
     position: fixed; /* or absolute, depending on your needs */
@@ -108,7 +113,7 @@
 <div class="countdown">
     <p id="countdownTimer">not started</p> 
 </div>
-<!-- Modal -->
+
 <div class="modal fade" id="congratulationsModal" tabindex="-1" role="dialog" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -223,9 +228,12 @@ function countdownTimer(seconds) {
             if (currentStage === stages.length) {
                 incrementCherriesValue(); // Increment cherries value when tree is fully grown
                 decrementCarbonValue(); // Decrement carbon footprint value by (3) when tree is fully grown
-                $('#congratulationsModal').modal('show');
                 alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
                 plantingInProgress = false; // Reset planting flag
+                $('#congratulationsModal').modal('show');
+                $(document).ready(function(){
+                    $("#congratulationsModal").modal('show');
+                });
             }
         }
     }, 1000);
