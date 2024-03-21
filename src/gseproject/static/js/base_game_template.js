@@ -31,6 +31,7 @@ function resetUserProfile() {
         .catch(error => {
             console.error('Error:', error);
         });
+        alert("Profile Reset")
     }
           
 //-----------------updateCherriesValue-----------------------------------------------------------------

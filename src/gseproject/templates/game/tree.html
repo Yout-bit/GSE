@@ -91,7 +91,6 @@
 }
 </style>
 <button id="resetButton">Reset</button>
-<img id="close-Button" src="{% static 'images/icons8-close-50.png' %}" alt="Close" onclick="goBack()">
 <div class="start-container">
     <p id="plantTree-text"> Click the tree to start planting!</p>
     <img id="plantButton" src="{% static 'images/treebutton.jpg' %}" alt="treebutton" onclick="plantTree()">
@@ -171,12 +170,8 @@ window.onload = function() {
     // Hide all images initially
     for (let i = 1; i <= stages.length; i++) {
         document.getElementById('treeImage' + i).style.display = 'none';
-    }
-    
+    }  
 };
-function goBack() {
-    window.history.back();
-}
 function plantTree() {
     if (plantingInProgress) return; // If planting is already in progress, exit
 

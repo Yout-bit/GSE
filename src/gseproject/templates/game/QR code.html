@@ -1,5 +1,10 @@
-{% extends 'game/base_game_template.html' %} {% block title %}EXEPET{% endblock
-%} {% block content %} {% load static %}
+{% extends 'game/base_game_template.html' %}
+
+{% block title %}Scanner{% endblock %}
+
+{% block content %}
+
+{% load static %}
 <link
   rel="stylesheet"
   type="text/css"
@@ -9,7 +14,6 @@
 <div id="qr-reader-container">
   <div id="qr-reader"></div>
 </div>
-<button id="backButton" class="btn btn-success" onclick="goBack()">Back</button>
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 <script type="text/javascript">
