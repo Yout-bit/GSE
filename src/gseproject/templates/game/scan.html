@@ -1,13 +1,179 @@
 {% extends 'game/base_game_template.html' %}
 
 
-{% block title %}EXEPET{% endblock %}
+{% block title %}Scan{% endblock %}
 
 {% block content %}
 
-<!-- This scan.html did nothing previously.
-    The Scan function can be accessed from any of the game pages 
-    If you are filling it in remember that ass the js functions in base_game_template.js are included, so DO NOT redefine those functions  
- -->
 
+<<<<<<< HEAD
+<style>
+ .scan_icon_container{
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top:12%;
+    max-width: 300px;
+    max-height: 600px;
+  }
+  .scan_icon_container img{
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+    transform: rotate(-10deg);
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+
+  }
+  .scan_icon_container img:hover
+  {
+    transform: rotate(10deg);
+  }
+  .start_button_container{
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    top: 60%;
+    max-width: 200px;
+    max-height: 400px;
+  }
+  .start_button_container img{
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    max-height: 100%;
+    transition: transform 0.3s ease; /* Add transition for smooth scaling */
+
+  }
+  .start_button_container img:hover {
+    transform: scale(0.9); /* Scale the image down to 90% on hover */
+  }
+
+</style>
+{% load static %}
+
+<div class="image-container">
+
+    <div class="scan_icon_container" >
+      <img src="{% static 'images/scan_icon.png' %}" alt="scan_icon" onclick="scanForCoordinate()">
+    </div>
+
+    
+    <div class="start_button_container" >
+      <img src="{% static 'images/START.png' %}" alt="start_button" onclick="scanForCoordinate()">
+    </div>
+</div>
+
+  <script src="{% static 'js/buildings.js' %}"></script>
+<script>
+  
+  
+  
+  // Function to calculate the distance between two points
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // Radius of the Earth in meters
+    const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+    const dLon = (lon2 - lon1) * (Math.PI / 180);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in meters
+    return distance;
+  }
+  
+  // Function to find buildings within the specified range
+  function findBuildingsWithinRange(latitude, longitude, maxRange) {
+    const userLocation = { lat: latitude, lng: longitude };
+    const buildingsWithinRange = [];
+  
+    buildings.forEach((building) => {
+      const distance = calculateDistance(
+        userLocation.lat,
+        userLocation.lng,
+        building.location.lat,
+        building.location.lng
+      );
+  
+      if (distance <= maxRange) {
+        buildingsWithinRange.push(building);
+      }
+    });
+  
+    return buildingsWithinRange;
+  }
+  
+  // Function to handle scanning and checking location
+  // Function to handle scanning and checking location
+  function scanForCoordinate() {
+    // Check if geolocation is supported
+    if (navigator.geolocation) {
+      // Get the current position
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Extract latitude and longitude from the position object
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+
+          console.log("Latitude: " + latitude);
+          console.log("Longitude: " + longitude);
+          // Define the maximum range in meters
+          const maxRange = 25; // Maximum range in meters
+
+          // Find buildings within the specified range
+          const buildingsInRange = findBuildingsWithinRange(latitude, longitude, maxRange);
+
+          if (buildingsInRange.length > 0) {
+            // Show the name of the nearest building
+            const nearestBuilding = buildingsInRange[0];
+
+            // Check if the building is the same as the last one
+            if (checkQRCodeInCookies(nearestBuilding.name)) {
+              // If the building has been scanned before, show a message
+              alert("Nearest Building: " + nearestBuilding.name  + " has been scanned before. Please try again later.");
+            } else {
+              // Add 10 to cherry_num_value
+              cherry_num_value += 10;
+              // Add nearestBuilding.name to cookies
+              document.cookie = nearestBuilding.name;
+
+              // Update the cherry_num_element on the page
+              cherry_num_element.textContent = cherry_num_value;
+
+              // Show a success message
+              alert("Nearest Building: " + nearestBuilding.name + "\n" + "Exeter Green POWER absorbed: 10");
+            }
+          } else {
+            // If no buildings are within range, show a message
+            alert("Your location is too far from any building.");
+          }
+        },
+        (error) => {
+          // Handle any errors that may occur
+          console.error("Error getting location:", error.message);
+        }
+      );
+    } else {
+      // Geolocation is not supported by the browser
+      console.error("Geolocation is not supported by your browser.");
+    }
+  }
+
+  // Function to check if building exists in cookies
+  function checkQRCodeInCookies(buildingName) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i].trim();
+      if (cookie.indexOf(buildingName) === 0) {
+        return true; // buildingName found in cookies
+      }
+    }
+    return false; // buildingName not found in cookies
+  }
+  
+  </script>
 {% endblock %}
+=======
+{% endblock %}
+>>>>>>> develop

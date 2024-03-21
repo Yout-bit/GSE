@@ -59,6 +59,15 @@
             onclick="redirectToPage('scanner/')"
           />
         </div>
+<<<<<<< HEAD
+      
+      
+          <div class="bottom-bar">
+            <img src="{% static 'images/MAP.png' %}" alt="MAP"  onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
+            <img src="{% static 'images/SCAN.png' %}" alt="SCAN"  onclick="scanAndCheckLocation()"">
+            <img src="{% static 'images/QR_CODE.png' %}" alt="QRCODE"  onclick="openQRScanner()">
+          </div>
+=======
       </div>
 
       <div class="cherry-container">
@@ -69,6 +78,7 @@
           <p id="carbon-footprint">
             CarbonFootprint: {{ user_profile.carbonFootprint }}/10
           </p>
+>>>>>>> develop
         </div>
 
         <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
@@ -76,6 +86,36 @@
       </div>
       <button class="button-toggle" onclick="toggleSubSession()">≡</button>
     </div>
+<<<<<<< HEAD
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="{% static 'js/base_game_template.js' %}"></script>
+        <script>
+            // Call the updateCarbonFootprint function initially
+            updateCarbonFootprint();
+            
+            // Set interval to call the updateCarbonFootprint function every second
+            setInterval(updateCarbonFootprint, 1000);
+            
+            // Call the updateCherriesValue function initially
+            updateCherriesValue();
+            
+            // Set interval to call the updateCherriesValue function every second
+            setInterval(updateCherriesValue, 1000);
+            
+            function openQRScanner() {
+              // Redirect to the QR scanner page
+              window.location.href = "{% url 'scanner' %}";
+            }   
+
+            function scanAndCheckLocation() {
+              // Redirect to the QR scanner page
+              window.location.href = "{% url 'scan' %}";
+            }   
+            
+        </script>
+    </body>
+</html>
+=======
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/buildings.js' %}"></script>
     <script src="{% static 'js/base_game_template.js' %}"></script>
@@ -94,3 +134,4 @@
     </script>
   </body>
 </html>
+>>>>>>> develop
