@@ -18,4 +18,5 @@ urlpatterns = [
     path('api/increment_carbon_footprint/', views.increment_carbon_footprint, name='increment_carbon_footprint'),
     path('scan/', views.scan_view, name='scan'),
     path('start-pet-walk/', views.petDisappear, name='start-pet-walk'),
+    path('pet-check', views.petCheck, name = 'pet-check'),
 ]

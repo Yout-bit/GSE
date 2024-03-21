@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from .models import UserProfile, ScannedNumber
+from .models import UserProfile, ScannedNumber 
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from datetime import timedelta
+from django.db import models
 
 def home_view(request):
     return render(request, 'home.html')
@@ -117,8 +118,23 @@ def scan_view(request):
 @login_required
 def petDisappear(request):
     player, _ = UserProfile.objects.get_or_create(user=request.user)
-    player.dragon_visible = False
-    player.next_dragon_appearance = timezone.now() + timedelta(minutes=60)
+    player.pet_visible = False
+    player.next_pet_appearance = timezone.now() + timedelta(minutes=60)
     player.save()
     
-    return JsonResponse({'success': 'Pet walk started. Come back in 60 minutes to see your pet!', "visible":player.dragon_visible, "nextshow":player.next_dragon_appearance})
+    return JsonResponse({"visible":player.pet_visible, "nextshow":player.next_pet_appearance})
+
+@require_POST
+@login_required
+def petCheck(request):
+    player, _ = UserProfile.objects.get_or_create(user=request.user)
+    
+    if player.pet_visible == False and player.next_pet_appearance <= timezone.now():
+        player.pet_visible = True
+        player.next_pet_appearance = models.DateTimeField(null=True, blank=True)
+        player.save()
+    
+        return JsonResponse({"visible":player.pet_visible, "nextshow":player.next_pet_appearance})
+    
+    else:
+        return JsonResponse({})

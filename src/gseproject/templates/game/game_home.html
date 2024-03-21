@@ -44,6 +44,7 @@
 
 <script>
     function petDisappear() {
+        console.log("Pet Disappeared")
         document.getElementById("DragonImage").style.display = 'none';
     }
 
@@ -52,8 +53,31 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        petDisappear();
+        petCheckCounter();
     });
+    function petCheckCounter() {
+        fetch('{% url "pet-check" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({}),
+        })
+        .then(data => {
+            // Check if the response JSON is blank (or effectively empty)
+            if (Object.keys(data.json()).length === 0) {
+                console.log('Nothing');
+            // Handle blank response here (e.g., show a message to the user)
+        } else {
+            petAppear();
+            // Handle non-blank response here
+        }
+        })
+            .catch((error) => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
 
 </Script>
 {% endblock %}
