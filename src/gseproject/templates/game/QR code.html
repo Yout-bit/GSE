@@ -1,52 +1,46 @@
-{% extends 'game/base_game_template.html' %}
-
-
-{% block title %}EXEPET{% endblock %}
-
-{% block content %}
-
-{% load static %}
-<link rel="stylesheet" type="text/css" href=" {% static 'css/scanner_styles.css' %}">
-
+{% extends 'game/base_game_template.html' %} {% block title %}EXEPET{% endblock
+%} {% block content %} {% load static %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href=" {% static 'css/scanner_styles.css' %}"
+/>
 
 <div id="qr-reader-container">
   <div id="qr-reader"></div>
 </div>
 <button id="backButton" class="btn btn-success" onclick="goBack()">Back</button>
 
-
 <script src="https://unpkg.com/html5-qrcode"></script>
-
-<script>
-    function domReady(fn) {
-      if (
-        document.readyState === "complete" ||
-        document.readyState === "interactive"
-      ) {
-        setTimeout(fn, 1);
-      } else {
-        document.addEventListener("DOMContentLoaded", fn);
-      }
+<script type="text/javascript">
+  var handleScannedNumberUrl = "{% url 'handle_scanned_number' %}";
+  function domReady(fn) {
+    if (
+      document.readyState === "complete" ||
+      document.readyState === "interactive"
+    ) {
+      setTimeout(fn, 1);
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
     }
+  }
 
   domReady(function () {
-      var scannedNumber = null;
+    var scannedNumber = null;
 
-      function onScanSuccess(decodedText, decodedResult) {
-        // Store the decoded text in a variable
-        scannedNumber = parseInt(decodedText);
-        // Optionally, you can perform any further actions with the decoded value here
-        console.log("Decoded value:", scannedNumber);
-        console.log("Value type:", typeof scannedNumber);
-        sendDataToDjango(scannedNumber);
-      }
+    function onScanSuccess(decodedText, decodedResult) {
+      // Store the decoded text in a variable
+      scannedNumber = parseInt(decodedText);
+      console.log("Decoded value:", scannedNumber);
+      console.log("Value type:", typeof scannedNumber);
+      sendDataToDjango(scannedNumber);
+    }
 
-      var htmlscanner = new Html5QrcodeScanner("qr-reader", {
-        fps: 10,
-        qrbox: 250,
-      });
-      htmlscanner.render(onScanSuccess);
+    var htmlscanner = new Html5QrcodeScanner("qr-reader", {
+      fps: 10,
+      qrbox: 250,
     });
-
+    htmlscanner.render(onScanSuccess);
+  });
 </script>
 {% endblock %}
