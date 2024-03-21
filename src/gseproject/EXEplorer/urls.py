@@ -2,7 +2,6 @@ from django.urls import path
 from . import views
 from .views import handle_scanned_number
 from .views import reset_user_profile
-from .views import petDisappear
 
 urlpatterns = [
     path("", views.home_view, name="home"),
@@ -17,7 +16,6 @@ urlpatterns = [
     path('api/update_cherries_value/', views.update_cherries_value, name='update_cherries_value'),
     path('api/get_carbon_footprint_value/', views.get_carbon_footprint_value, name='get_carbon_footprint_value'),
     path('api/increment_carbon_footprint/', views.increment_carbon_footprint, name='increment_carbon_footprint'),
+    path('api/decrement_carbon_footprint/', views.decrement_carbon_footprint, name='decrement_carbon_footprint'),
     path('scan/', views.scan_view, name='scan'),
-    path('start-pet-walk/', views.petDisappear, name='start-pet-walk'),
-    path('pet-check', views.petCheck, name = 'pet-check'),
 ]

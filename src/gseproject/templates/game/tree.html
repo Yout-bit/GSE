@@ -8,6 +8,7 @@
 
 {% load static %}
 <style> 
+ 
     .countdown {
       position: fixed;
       top: 80px;
@@ -63,16 +64,33 @@
     cursor: pointer;
     border-radius: 10px;
 }
+#close-Button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px; /* Set the maximum width */
+    height: auto; /* Allow the height to adjust proportionally */
+    margin-right: 10px; /* Margin between button and text */
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
 </style>
 <button id="resetButton">Reset</button>
+<img id="close-Button" src="{% static 'images/close-tab-bar-64.png' %}" alt="Close" onclick="goBack()">
 <div class="start-container">
     <p id="plantTree-text"> Click the tree to start planting!</p>
     <img id="plantButton" src="{% static 'images/treebutton.jpg' %}" alt="treebutton" onclick="plantTree()">
+</div>
 </div>
 <img id="treeImage1" src="{% static 'images/seed.jpg' %}" alt="Seed">
 <img id="treeImage2" src="{% static 'images/sprout.jpg' %}" alt="Sprout">
 <img id="treeImage3" src="{% static 'images/sapling.jpg' %}" alt="Sapling">
 <img id="treeImage4" src="{% static 'images/tree.jpg' %}" alt="Tree">
+
 
 <div class="countdown">
     <p id="countdownTimer">not started</p> 
@@ -99,7 +117,9 @@ window.onload = function() {
     }
     
 };
-
+function goBack() {
+    window.history.back();
+}
 function plantTree() {
     if (plantingInProgress) return; // If planting is already in progress, exit
 
@@ -150,6 +170,7 @@ function countdownTimer(seconds) {
             timerElement.textContent = ''; // Clear timer display
             if (currentStage === stages.length) {
                 incrementCherriesValue(); // Increment cherries value when tree is fully grown
+                decrementCarbonValue(); // Decrement carbon footprint value by (3) when tree is fully grown
                 alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
                 plantingInProgress = false; // Reset planting flag
             }
@@ -256,6 +277,37 @@ function incrementCherriesValue() {
         }
     });
 }
+function decrementCarbonValue() {
+    // Send an AJAX request to decrement the carbon footprint on the server
+    $.ajax({
+        url: '/api/decrement_carbon_footprint/', // Your API endpoint
+        type: 'POST',
+        data: {
+            // Since your backend logic decrements by a fixed amount,
+            // no need to send the amount unless you modify the backend to accept variable amounts
+        },
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'), // Ensure CSRF token is included if needed
+        },
+        success: function(response) {
+            if (response.success) {
+                // Update the displayed carbon footprint value with the new value from the response
+                var carbonValueElement = document.getElementById("carbon_num");
+                carbonValueElement.textContent = response.new_carbon_footprint_value; // Update to match the exact response structure
+            } else {
+                console.error('Failed to decrement carbon footprint:', response.error);
+                // Optionally, display an error message to the user
+                // $('#error-message').text('Failed to decrement carbon footprint. Please try again later.');
+            }
+        },
+        error: function(xhr, errmsg, err) {
+            console.error(xhr.status + ": " + xhr.responseText);
+            // Optionally, display an error message to the user
+            // $('#error-message').text('An error occurred while communicating with the server. Please try again later.');
+        }
+    });
+}
+
 
 // Select the reset button element
 var resetButton = document.getElementById('resetButton');
