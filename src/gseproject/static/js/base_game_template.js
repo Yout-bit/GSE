@@ -147,7 +147,7 @@ cherry_num_element.textContent = cherry_num_value;
 
 function sendDataToDjango(scannedNumber) {
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", "{% url 'handle_scanned_number' %}", true);
+  xhr.open("POST", handleScannedNumberUrl, true); // Use the URL from the global variable
   xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
   // Include CSRF token in the request headers
