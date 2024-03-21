@@ -16,9 +16,10 @@
 
 
 <script src="https://unpkg.com/html5-qrcode"></script>
-
-<script>
-    function domReady(fn) {
+<script src="path/to/base_game_template.js"></script>
+<script type="text/javascript">
+  var handleScannedNumberUrl = "{% url 'handle_scanned_number' %}";
+  function domReady(fn) {
       if (
         document.readyState === "complete" ||
         document.readyState === "interactive"
@@ -47,6 +48,6 @@
       });
       htmlscanner.render(onScanSuccess);
     });
-
+    
 </script>
 {% endblock %}

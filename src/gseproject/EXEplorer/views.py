@@ -82,6 +82,7 @@ def get_carbon_footprint_value(request):
     return JsonResponse({'carbon_footprint_value': carbon_footprint_value})
 
 
+
 def increment_carbon_footprint(request):
     if request.method == 'POST':
         # Get the current user's profile
@@ -113,6 +114,24 @@ def get_cherries_value(request):
     cherries_value = request.user.userprofile.cherries
     # Return the value as a JSON response
     return JsonResponse({'cherries_value': cherries_value})
+
+@login_required
+def update_cherries_value(request):
+    if request.method == 'POST':
+        try:
+            cherries_value = int(request.POST.get('cherries_value', ''))
+            user_profile = request.user.userprofile
+            user_profile.cherries = cherries_value
+            user_profile.save()
+            return JsonResponse({'success': True, 'message': 'Cherries value updated successfully.'})
+        except ValueError:
+            return JsonResponse({'success': False, 'error': 'Invalid cherries value.'}, status=400)
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'User profile not found.'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': 'An error occurred.'}, status=500)
+    else:
+        return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
     
 def shop_view(request):
     return render(request, 'game/shop.html')
