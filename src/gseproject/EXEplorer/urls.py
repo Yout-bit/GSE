@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
-from .views import handle_scanned_number
 from .views import reset_user_profile
+
 
 urlpatterns = [
     path("", views.home_view, name="home"),

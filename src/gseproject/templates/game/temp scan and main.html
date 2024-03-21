@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXEplorer</title>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<style> 
+  * {
+    border: #4CAF50 2px solid;
+    touch-action: manipulation; /* Prevent double-tap zoom */
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    position: relative;
+    min-height: 100vh; /* Ensure the body covers the entire viewport height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: hidden; /* Prevent vertical scrolling */
+  }
+  .container {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 60px); /* Adjusted for bottom bar height */
+    background-color: #f0f0f0;
+    overflow: hidden;
+    padding-bottom: 8vh; /* Ensure content doesn't get hidden behind the bottom bar */
+  }
+  .button-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px; /* Adjusted to top left corner */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    z-index: 9999; /* Adjusted to ensure it's always on top */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  .sub-session {
+    position: absolute;
+    top: 0;
+    left: -40%; /* Adjusted to 40% width */
+    width: 40%;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 3;
+  }
+  .sub-session.open {
+    left: 0; /* Slide in when open */
+  }
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 2; /* Adjusted to ensure it's below the button */
+  }
+  .overlay.active {
+    display: block;
+  }
+  .bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 8vh; /* 8% of viewport height */
+    background-color: #333;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 9999; /* Ensure it's always on top */
+  }
+  .bottom-bar button {
+    color: white;
+    background-color: #555;
+    border: none;
+    padding:15px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: medium;
+    transition: background-color 0.3s ease;
+  }
+  .bottom-bar button:hover {
+    background-color: #777;
+  }
+  .sub-session-content {
+    padding: 0% 0;
+    text-align: center;
+    border: none; 
+  }
+  .sub-session-content-logout {
+    padding: 0% 0;
+    text-align: center;
+    position: absolute;
+    border: none; 
+    bottom: 25%;
+    width: 100%;
+  }
+
+  .coin-display {
+    position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: gold;
+            padding: 5px;
+            border-radius: 5px;
+            color: black;
+  }
+  .sub-session-content-logout-link {
+    color: inherit; 
+    text-decoration: none; 
+    border: none; 
+    background-color: transparent; 
+    padding: 0;
+    margin: 0; 
+}
+
+.central-element {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.central-element img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  {% load static %}
+  <div class="central-element">
+    <img src="{% static 'images/output.jpg' %}" alt="placeholder" class="img-fluid">
+  </div>
+
+  <div class="sub-session" id="subSession">
+    <div style="width: 100%; height: 10%; border: none;"></div>
+    <!-- Content of the sub session goes here -->
+    <h2 class="sub-session-content" onclick="refreshPage()">Home</h2>
+    <h2 class="sub-session-content" onclick="alert('SHOP clicked')">Shop</h2>
+    <h2 class="sub-session-content" onclick="alert('History clicked')">History</h2>
+    <h2 class="sub-session-content" onclick="alert('About clicked')">About</h2>
+
+    <h2 class="sub-session-content-logout"><a href="{% url 'home' %}" class="sub-session-content-logout-link">Return</a></h2>  
+  </div>
+  <div class="overlay" id="overlay" onclick="toggleSubSession()"></div>
+</div>
+
+<button class="button-toggle" onclick="toggleSubSession()">≡</button>
+
+<div class="bottom-bar">
+  <button onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'">Map</button>
+
+  <button onclick="scanAndCheckLocation()">Scan</button>
+  <button onclick="openQRScanner()">Open QR Scanner</button>
+</div>
+
+<div class="coin-display">
+  &#x1FA99; Coins: {{ coins }}
+</div>
+
+<script>
+function openQRScanner() {
+            // Redirect to the QR scanner page
+            window.location.href = "{% url 'scanner' %}";
+}
+
+function toggleSubSession() {
+  var subSession = document.getElementById("subSession");
+  var overlay = document.getElementById("overlay");
+  subSession.classList.toggle("open");
+  overlay.classList.toggle("active");
+}
+function refreshPage() {
+    location.reload(); // This line reloads the page
+}
+
+// Function to handle scanning and checking location
+ // Predefined array of buildings with names and coordinates
+ const buildings = [
+      { name: "Exeter One Block C", location: { lat: 50.739853, lng: -3.545982 } },
+      { name: "sport park", location: { lat: 50.73777604517844, lng: -3.5372411677882427 } },
+      { name: "INTO Exeter", location: { lat: 50.736054286171395, lng: -3.533934551559336 } },
+      { name: "Great Hall", location: { lat: 50.73549282936743, lng: -3.534577358376538 } },
+      { name: "Forum", location: { lat: 50.73552008008422, lng: -3.533805811113204 } },
+      { name: "Exeter library", location: { lat: 50.735493087851445, lng: -3.533294030128004 } },
+      { name: "Devonshire House", location: { lat: 50.73494324268427, lng: -3.534412366357129 } },
+      { name: "Queens Building", location: { lat: 50.73449636375293, lng: -3.5346366654312993 } },
+      { name: "Old Library", location: { lat: 50.733423968372335, lng: -3.534261025796802 } },
+      { name: "Hatherly Laboratories", location: { lat: 50.73403019226748, lng: -3.5331800569656564 } },
+      { name: "Exeter Northcott Theatre", location: { lat: 50.73581601104062, lng: -3.535169181217625 } },
+      { name: "Peter Chalk Centre", location: { lat: 50.736291440802674, lng: -3.5359763384371847 } },
+      { name: "Laver Building", location: { lat: 50.737386322677416, lng: -3.5334687416050254 } },
+      { name: "Harrison Building", location: { lat: 50.737507526268054, lng: -3.532889295495887 } },
+      { name: "SWIOT Building", location: { lat: 50.737908686355524, lng: -3.5304422433978604 } },
+      { name: "Innovation Centre", location: { lat: 50.73826130515783, lng: -3.531193928475741 } },
+      { name: "XFi Building", location: { lat: 50.736058501012415, lng: -3.5302494398729363 } },
+      { name: "Building:One", location: { lat: 50.73571302267035, lng: -3.529901119084657 } },
+      { name: "Streatham Court", location: { lat: 50.7358055379937, lng: -3.5313437765806253 } },
+      { name: "Lemon Grove", location: { lat: 50.73503423639206, lng: -3.529732856785485 } }
+      // Add more buildings as needed
+    ];
+
+    // Function to calculate the distance between two points
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+      const R = 6371000; // Radius of the Earth in meters
+      const dLat = (lat2 - lat1) * (Math.PI / 180); // Convert degrees to radians
+      const dLon = (lon2 - lon1) * (Math.PI / 180);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const distance = R * c; // Distance in meters
+      return distance;
+    }
+
+    // Function to find buildings within the specified range
+    function findBuildingsWithinRange(latitude, longitude, maxRange) {
+      const userLocation = { lat: latitude, lng: longitude };
+      const buildingsWithinRange = [];
+
+      buildings.forEach((building) => {
+        const distance = calculateDistance(
+          userLocation.lat,
+          userLocation.lng,
+          building.location.lat,
+          building.location.lng
+        );
+
+        if (distance <= maxRange) {
+          buildingsWithinRange.push(building);
+        }
+      });
+
+      return buildingsWithinRange;
+    }
+
+    // Function to handle scanning and checking location
+    function scanAndCheckLocation() {
+      // Check if geolocation is supported
+      if (navigator.geolocation) {
+        // Get the current position
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Extract latitude and longitude from the position object
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Define the maximum range in meters
+            const maxRange = 25; // Maximum range in meters
+
+            // Find buildings within the specified range
+            const buildingsInRange = findBuildingsWithinRange(latitude, longitude, maxRange);
+
+            if (buildingsInRange.length > 0) {
+              // Show the name of the nearest building
+              const nearestBuilding = buildingsInRange[0];
+              alert("Nearest Building: " + nearestBuilding.name);
+            } else {
+              // If no buildings are within range, show a message
+              alert("Your location is too far from any building.");
+            }
+          },
+          (error) => {
+            // Handle any errors that may occur
+            console.error("Error getting location:", error.message);
+          }
+        );
+      } else {
+        // Geolocation is not supported by the browser
+        console.error("Geolocation is not supported by your browser.");
+      }
+    }
+
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+
+</script>
+
+</body>
+</html>
