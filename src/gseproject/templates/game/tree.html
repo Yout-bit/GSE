@@ -34,10 +34,14 @@
 }
 
 /* Style for the plant button */
-#plantButton {
-    width: 200px; /* Set the maximum width */
+#plantButton{
+    width: 250px; /* Set the maximum width */
     height: auto; /* Allow the height to adjust proportionally */
     margin-right: 10px; /* Margin between button and text */
+}
+#plantButton:hover {
+    cursor: pointer; /* Change cursor to pointer on hover */
+    transform: scale(1.1); /* Slightly enlarge the element */
 }
 
 /* Style for the text */
@@ -65,22 +69,29 @@
     border-radius: 10px;
 }
 #close-Button {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px; /* Set the maximum width */
-    height: auto; /* Allow the height to adjust proportionally */
-    margin-right: 10px; /* Margin between button and text */
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
+    background-color: rgb(255, 145, 0);
+    position: fixed; /* or absolute, depending on your needs */
+    top:14%;
+    left: 64%;
+    transform: translate(-50%, -50%);
+}
+/* Custom CSS to adjust the modal position */
+.modal-dialog-centered-at-top {
+    margin-top: 10vh; /* Adjusts the top margin to position the modal closer to the top */
+    display: flex; /* Enables flexbox for this element */
+    justify-content: center; /* Centers the modal horizontally */
+}
+
+/* Ensures the modal is centered horizontally at all times */
+@media (min-width: 576px) {
+    .modal-dialog-centered-at-top {
+        flex-direction: row;
+        justify-content: center;
+    }
 }
 </style>
 <button id="resetButton">Reset</button>
-<img id="close-Button" src="{% static 'images/close-tab-bar-64.png' %}" alt="Close" onclick="goBack()">
+<img id="close-Button" src="{% static 'images/icons8-close-50.png' %}" alt="Close" onclick="goBack()">
 <div class="start-container">
     <p id="plantTree-text"> Click the tree to start planting!</p>
     <img id="plantButton" src="{% static 'images/treebutton.jpg' %}" alt="treebutton" onclick="plantTree()">
@@ -95,9 +106,52 @@
 <div class="countdown">
     <p id="countdownTimer">not started</p> 
 </div>
+<!-- Modal -->
+<div class="modal fade" id="congratulationsModal" tabindex="-1" role="dialog" aria-labelledby="congratulationsModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="congratulationsModalLabel">Congratulations!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Congratulations! You have grown a full tree and earned 10 bonus cherries, carbon footprint reduced by 1!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<!-- Optional JavaScript; choose one of the two! -->
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
- 
+// -------Select the close button element-----------------------------------
+const closeButton = document.getElementById('close-Button');
+
+// Path to the static and animated images
+const staticImg = "{% static 'images/icons8-close-50.png' %}";
+const animatedImg = "{% static 'images/icons8-close.gif' %}";
+
+// Change to the animated GIF on hover
+closeButton.addEventListener('mouseover', () => {
+  closeButton.src = animatedImg;
+});
+
+// Revert to the static image when not hovered
+closeButton.addEventListener('mouseout', () => {
+  closeButton.src = staticImg;
+});
+// Hide the reset button initially
+ document.getElementById('resetButton').style.display = 'none';
+// Define the tree stages
 let stage1 = 'static/images/seed.jpg';
 let stage2 = 'static/images/sprout.jpg';
 let stage3 = 'static/images/sapling.jpg';
@@ -171,7 +225,8 @@ function countdownTimer(seconds) {
             if (currentStage === stages.length) {
                 incrementCherriesValue(); // Increment cherries value when tree is fully grown
                 decrementCarbonValue(); // Decrement carbon footprint value by (3) when tree is fully grown
-                alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
+                $('#congratulationsModal').modal('show');
+                // alert('Congratulations! You have grown a full tree and earned 10 bonus cherries!, carbon footprint reduced by 1!');
                 plantingInProgress = false; // Reset planting flag
             }
         }
