@@ -137,23 +137,23 @@
     document.addEventListener('click', function() {
     document.getElementById('myAudio').play();
 });
-// -------Select the close button element-----------------------------------
+
 const closeButton = document.getElementById('close-Button');
 
-// Path to the static and animated images
+
 const staticImg = "{% static 'images/icons8-close-50.png' %}";
 const animatedImg = "{% static 'images/icons8-close.gif' %}";
 
-// Change to the animated GIF on hover
+
 closeButton.addEventListener('mouseover', () => {
   closeButton.src = animatedImg;
 });
 
-// Revert to the static image when not hovered
+
 closeButton.addEventListener('mouseout', () => {
   closeButton.src = staticImg;
 });
-// Hide the reset button initially
+
  document.getElementById('resetButton').style.display = 'none';
 // Define the tree stages
 let stage1 = 'static/images/seed.jpg';
@@ -165,7 +165,6 @@ let stages = [stage1, stage2, stage3, stage4];
 let currentStage = 1;
 let cherriesAdd = 10;
 let countdownTime = 40000;
-// let cooldownDuration = 3600000; // 1 hour in milliseconds, change for testing if needed
 let plantingInProgress = false; // Flag to track if planting process is in progress
 hideAllImages();
 window.onload = function() {
@@ -183,14 +182,14 @@ function plantTree() {
 
     // Start planting process
     plantingInProgress = true;
-    countdownTimer(countdownTime / 1000); // Start countdown timer /1000 
+    countdownTimer(countdownTime / 1000); 
 
     // Display seed image initially
     document.getElementById('treeImage1').style.display = 'block';
 
     // Start growing stages after button click
     let interval = setInterval(() => {
-                                    /*curentstage start at */
+                                    
         if (currentStage < stages.length) {
             currentStage++;
             // Hide all images except the current stage
@@ -208,7 +207,7 @@ function plantTree() {
             }
             
         } 
-    }, 10000); // Change stage every (10) seconds for testing
+    }, 10000); // Change stage every (10) seconds
 }
 
 
@@ -270,7 +269,7 @@ function hideAllImages() {
         }
     }
 }
-// Define a function to hide the container and its elements
+
 function hideContainer() {
 
     // Check if plantingInProgress is true
@@ -296,10 +295,9 @@ function showContainer() {
 
 
 function incrementCherriesValue() {
-    // Get the cherry number element
-   // Send an AJAX request to fetch the updated cherries value
+    // Send an AJAX request to fetch the updated cherries value
    $.ajax({
-        url: '/api/get_cherries_value/',  // URL to your API endpoint that returns the cherries value
+        url: '/api/get_cherries_value/',  // URL to the API endpoint that returns the cherries value
         type: 'GET',
         success: function(response) {
             // Increment the cherries value by 10
@@ -319,14 +317,12 @@ function incrementCherriesValue() {
                         cherryNumElement.textContent = updatedCherries;
                     } else {
                         console.error('Failed to update cherries value:', response.error);
-                        // Optionally, display an error message to the user
-                        // $('#error-message').text('Failed to update cherries value. Please try again later.');
+                        
                     }
                 },
                 error: function(xhr, errmsg, err) {
                     console.error(xhr.status + ": " + xhr.responseText);
-                    // Optionally, display an error message to the user
-                    // $('#error-message').text('An error occurred while communicating with the server. Please try again later.');
+                    
                 }
             });
         },
@@ -342,8 +338,7 @@ function decrementCarbonValue() {
         url: '/api/decrement_carbon_footprint/', // Your API endpoint
         type: 'POST',
         data: {
-            // Since your backend logic decrements by a fixed amount,
-            // no need to send the amount unless you modify the backend to accept variable amounts
+            
         },
         headers: {
             'X-CSRFToken': getCookie('csrftoken'), // Ensure CSRF token is included if needed
@@ -355,23 +350,21 @@ function decrementCarbonValue() {
                 carbonValueElement.textContent = response.new_carbon_footprint_value; // Update to match the exact response structure
             } else {
                 console.error('Failed to decrement carbon footprint:', response.error);
-                // Optionally, display an error message to the user
-                // $('#error-message').text('Failed to decrement carbon footprint. Please try again later.');
+                
             }
         },
         error: function(xhr, errmsg, err) {
             console.error(xhr.status + ": " + xhr.responseText);
-            // Optionally, display an error message to the user
-            // $('#error-message').text('An error occurred while communicating with the server. Please try again later.');
+            
         }
     });
 }
 
 
-// Select the reset button element
+// reset button
 var resetButton = document.getElementById('resetButton');
 
-// Add event listener to the reset button
+
 resetButton.addEventListener('click', function() {
     // Reset the variables to their initial values
     currentStage = 1;
