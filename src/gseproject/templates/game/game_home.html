@@ -26,26 +26,7 @@
         align-items: center;
         height: 100vh;
     }
-    .plantTree-container{
-  width: 100px;
-  height: auto;
-  position: absolute;
-  bottom: 25%;
-  right: 2%;
-  width: 100px;
-  height: 100px;
-}
-.plantTree-container img{
-  width: 100px;
-  height: auto;
-  position: absolute;
-  display: block;
-  max-height: 100%;
-  transition: transform 0.3s ease; /* Add transition for smooth scaling */
-}
-.plantTree-container img:hover{
-  transform: scale(1.1);
-}
+ 
 </style>
 
 <div class="image-container">
@@ -54,21 +35,11 @@
         <img id="DragonImage" src="{% static 'images/dragon.png' %}" alt="dragon">
     </div>
 
-    <div class="go-button">
-        <a href="{% url 'shop' %}">
-            <img src="{% static 'images/go.png' %}" alt="execute">
-        </a>
-    </div>
+ 
     
 
 </div>
-<div class="plantTree-container">
-    <img
-      src="{% static 'images/plantTree.jpg' %}"
-      alt="plantTree"
-      onclick="redirectToPage('tree/')"
-    />
-  </div>
+
 
 <script>
     function petDisappear() {

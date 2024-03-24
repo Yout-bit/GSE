@@ -26,7 +26,11 @@
       {% load static %}
       <div class="sub-session" id="subSession">
         <div style="width: 100%; height: 10%"></div>
-
+        <div class="go-button">
+          <a href="{% url 'shop' %}">
+              <img src="{% static 'images/go.png' %}" alt="execute">
+          </a>
+      </div>
         <a href="{% url 'home' %}"><h2 class="sub-session-content">HOME</h2></a>
         <a href="{% url 'shop' %}"><h2 class="sub-session-content">SHOP</h2></a>
         <h2 class="sub-session-content" onclick="alert('History clicked')">
@@ -47,14 +51,8 @@
       <div class="image-container">
         <div class="content">{% block content %} {% endblock %}</div>
 
-        <div class="plantTree-container">
-          <img
-            src="{% static 'images/plantTree.jpg' %}"
-            alt="plantTree"
-            onclick="redirectToPage('tree/')"
-          />
-        </div>
 
+        
         <div class="bottom-bar">
           <img src="{% static 'images/MAP.png' %}" alt="MAP"
           onclick="window.location.href='https://www.google.com/maps/d/u/0/embed?mid=1ZKJKDqcsVvyf16X0onBdjC6OXEfv1cc&ehbc=2E312F'"">
@@ -63,14 +61,18 @@
             alt="SCAN"
             onclick="scanAndCheckLocation()"
           />
-          <img
-            src="{% static 'images/QR_CODE.png' %}"
-            alt="QRCODE"
-            onclick="redirectToPage('scanner/')"
-          />
+
+          <a  href="{% url 'scanner' %}">
+            <img id="QR_CODE" src="{% static 'images/QR_CODE.png' %}"alt="QRCODE">
+          </a>
+
         </div>
       </div>
-
+      <div class="plantTree-container">
+        <a href="{% url 'tree'%}">
+            <img src="{% static 'images/plantTree.jpg' %}" alt="execute">
+        </a>
+    </div>
       <div class="cherry-container">
         <img src="{% static 'images/CHERRY.png' %}" alt="CHERRY" />
         <p id="cherry_num">{{user.userprofile.cherries}}</p>
